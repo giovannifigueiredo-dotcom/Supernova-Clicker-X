@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supernova Clicker v12.0 - GALACTIC EVOLUTION</title>
+    <title>Supernova Clicker v13.0 - COSMIC OVERDRIVE</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -2512,15 +2512,15 @@
 <div class="welcome-toast" id="welcomeToast">
     <span class="toast-icon-lg">🌟</span>
     <div class="toast-content">
-        <div class="toast-title">v11.0 - ACTION UPDATE!</div>
-        <div class="toast-subtitle">Meteoros · Bosses · Frenesi · Combos · Bomba</div>
+        <div class="toast-title">v13.0 - COSMIC OVERDRIVE!</div>
+        <div class="toast-subtitle">Novos upgrades · caixas · amps · pets · relíquias · bosses</div>
     </div>
     <button class="toast-action-btn" onclick="openDevLogFromToast()">Ver Novidades</button>
     <button class="toast-close-btn" onclick="closeWelcomeToast()">×</button>
 </div>
 
 <!-- DEV LOG FAB -->
-<button class="devlog-fab" onclick="toggleDevLog()" title="Development Log">📋<span class="fab-badge" id="fabBadge">5</span></button>
+<button class="devlog-fab" onclick="toggleDevLog()" title="Development Log">📋<span class="fab-badge" id="fabBadge">12</span></button>
 
 <!-- DEV LOG MODAL -->
 <div class="modal-overlay" id="devlogOverlay" onclick="closeDevLogOutside(event)">
@@ -2530,37 +2530,40 @@
                 <span class="modal-icon-lg">📝</span>
                 <div class="modal-title-text">
                     <h2>Development Log</h2>
-                    <p>v11.0 - Action Update</p>
+                    <p>v13.0 - Cosmic Overdrive</p>
                 </div>
             </div>
             <button class="modal-close" onclick="closeDevLog()">×</button>
         </div>
         <div class="modal-body">
             <div class="current-ver-card">
-                <div class="ver-badge-main">🚀 VERSÃO 12.0 — GALACTIC EVOLUTION</div>
-                <div class="ver-meta">📅 Última Atualização: 27 de Abril, 2026</div>
+                <div class="ver-badge-main">🚀 VERSÃO 13.0 — COSMIC OVERDRIVE</div>
+                <div class="ver-meta">📅 Última Atualização: 28 de Abril, 2026</div>
                 <div class="changelog-cat">
-                    <div class="cat-title">🛰️ NOVOS SISTEMAS DE PROGRESSO</div>
+                    <div class="cat-title">🛠️ EXPANSÃO GERAL DE CONTEÚDO</div>
                     <ul class="changelog-ul">
-                        <li class="changelog-li feature">🛰️ <strong>Missões Diárias</strong> — Complete 3 objetivos por dia para ganhar recompensas massivas em Gems e Novas!</li>
-                        <li class="changelog-li feature">🧿 <strong>Relíquias Cósmicas</strong> — Desbloqueie artefatos poderosos com bônus permanentes (Multiplicador de Boss, Meteoros e muito mais).</li>
-                        <li class="changelog-li feature">🌙 <strong>Progresso Offline</strong> — Ganhe Novas enquanto estiver fora! O sistema calcula sua produção passiva e te recompensa ao voltar.</li>
-                        <li class="changelog-li feature">🎰 <strong>Roleta Galáctica</strong> — 3 giros diários gratuitos com prêmios que variam de Novas a Gems raras.</li>
+                        <li class="changelog-li feature">⬆️ <strong>8 novos upgrades</strong> — Agora o arsenal possui mais camadas de clique, passivo, gem drop, prestígio e recompensa de bosses.</li>
+                        <li class="changelog-li feature">📦 <strong>3 novas lootboxes</strong> — Caixa Estelar, Caixa Quântica e Caixa Celestial adicionadas com pets raros e pontos de prestígio.</li>
+                        <li class="changelog-li feature">⚡ <strong>5 novos amplificadores</strong> — Novos boosts híbridos de clique, renda, sorte, velocidade e explosão global.</li>
+                        <li class="changelog-li feature">🐾 <strong>5 novos pets</strong> — Raposa Pulsar, Mecha Titã, Coruja do Vácuo, Fênix Solar e Abelha Quântica entram para a coleção.</li>
                     </ul>
                 </div>
                 <div class="changelog-cat">
-                    <div class="cat-title">🛡️ FERRAMENTAS DE DESENVOLVEDOR</div>
+                    <div class="cat-title">🌌 MECÂNICAS AMPLIADAS</div>
                     <ul class="changelog-ul">
-                        <li class="changelog-li feature">🔐 <strong>Painel Admin</strong> — Acesso restrito via código secreto (S-U-P-E-R-N-O-V-A) para testes de balanceamento e debug.</li>
-                        <li class="changelog-li improvement">📊 <strong>Log de Admin</strong> — Monitoramento em tempo real de todas as ações e ganhos do jogador.</li>
+                        <li class="changelog-li feature">🧿 <strong>4 novas relíquias</strong> — Mais opções permanentes para clique, produção, gem chance, boss loot e prestígio.</li>
+                        <li class="changelog-li feature">🛰️ <strong>Pool diário expandida</strong> — Novas missões envolvendo prestígio, relíquias, grind pesado e séries longas de ações.</li>
+                        <li class="changelog-li feature">🎰 <strong>Roleta ampliada</strong> — Novos prêmios incluindo pets raros, pacotes maiores de gems e pontos de prestígio.</li>
+                        <li class="changelog-li feature">👹 <strong>Boss ladder estendida</strong> — 3 novos bosses de fim de jogo e combos agora sobem até <strong>x25</strong>.</li>
                     </ul>
                 </div>
                 <div class="changelog-cat">
-                    <div class="cat-title">🎯 MELHORIAS DE UI/UX</div>
+                    <div class="cat-title">🔧 CORREÇÕES E MELHORIAS DE SISTEMA</div>
                     <ul class="changelog-ul">
-                        <li class="changelog-li improvement">Nova aba de <strong>Status</strong> com estatísticas detalhadas de jogo.</li>
-                        <li class="changelog-li improvement">Sistema de notificações visuais para eventos e conquistas melhorado.</li>
-                        <li class="changelog-li fix">Ajuste fino no z-index dos overlays de Boss e Lootbox.</li>
+                        <li class="changelog-li improvement">🤖 <strong>Pet auto-click corrigido</strong> — Pets com auto clique agora geram cliques automáticos corretamente.</li>
+                        <li class="changelog-li improvement">👑 <strong>Prestígio em lootboxes e roleta</strong> — Pontos de prestígio agora são concedidos corretamente nas recompensas.</li>
+                        <li class="changelog-li improvement">🏆 <strong>Conquistas revisadas</strong> — Todas ganharam descrições, novas metas e recompensas mais variadas.</li>
+                        <li class="changelog-li fix">📋 <strong>Dev Log atualizado</strong> — Esta atualização agora aparece nas notificações e no painel de changelog.</li>
                     </ul>
                 </div>
             </div>
@@ -2927,7 +2930,7 @@
                 <div class="artifact-summary-panel">
                     <div class="artifact-summary-card">
                         <div class="artifact-summary-label">Relíquias ativas</div>
-                        <div class="artifact-summary-value" id="artifactsOwnedCount">0/6</div>
+                        <div class="artifact-summary-value" id="artifactsOwnedCount">0/10</div>
                     </div>
                     <div class="artifact-summary-card">
                         <div class="artifact-summary-label">Bônus permanente</div>
@@ -3015,6 +3018,14 @@ const UPGRADES_DATA = [
     { id: 'lab', name: 'Laboratório', icon: '🔬', desc: '+100/s', category: 'passive', baseCost: 30000, costMult: 1.8, maxLevel: 15, effect: (lvl) => ({ perSecond: lvl * 100 }), preview: (lvl) => `+${lvl*100}/s` },
     { id: 'portal', name: 'Portal', icon: '🌀', desc: '+500/s', category: 'passive', baseCost: 100000, costMult: 2.0, maxLevel: 10, effect: (lvl) => ({ perSecond: lvl * 500 }), preview: (lvl) => `+${lvl*500}/s` },
     { id: 'lucky', name: 'Sorte Cósmica', icon: '🍀', desc: '+5% gems', category: 'special', baseCost: 5000, costMult: 2.0, maxLevel: 10, effect: (lvl) => ({ gemChance: lvl * 0.05 }), preview: (lvl) => `+${lvl*5}% gems` },
+    { id: 'plasmaGlove', name: 'Luva de Plasma', icon: '🧤', desc: '+25/clique', category: 'click', baseCost: 12000, costMult: 1.92, maxLevel: 25, effect: (lvl) => ({ perClick: lvl * 25 }), preview: (lvl) => `+${lvl*25}/clique` },
+    { id: 'antimatterCore', name: 'Núcleo de Antimatéria', icon: '🧨', desc: 'x1.25 poder', category: 'click', baseCost: 45000, costMult: 2.05, maxLevel: 15, effect: (lvl) => ({ clickMult: Math.pow(1.25, lvl) }), preview: (lvl) => `x${Math.pow(1.25,lvl).toFixed(2)}` },
+    { id: 'orbitalArray', name: 'Array Orbital', icon: '🛰️', desc: '+250/s', category: 'passive', baseCost: 20000, costMult: 1.95, maxLevel: 25, effect: (lvl) => ({ perSecond: lvl * 250 }), preview: (lvl) => `+${lvl*250}/s` },
+    { id: 'dysonSwarm', name: 'Enxame Dyson', icon: '☀️', desc: '+1500/s', category: 'passive', baseCost: 150000, costMult: 2.12, maxLevel: 15, effect: (lvl) => ({ perSecond: lvl * 1500 }), preview: (lvl) => `+${formatNum(lvl*1500)}/s` },
+    { id: 'starlightRefinery', name: 'Refinaria Estelar', icon: '🏗️', desc: '+8000/s', category: 'passive', baseCost: 1200000, costMult: 2.18, maxLevel: 8, effect: (lvl) => ({ perSecond: lvl * 8000 }), preview: (lvl) => `+${formatNum(lvl*8000)}/s` },
+    { id: 'gemCompressor', name: 'Compressor de Gems', icon: '💠', desc: '+2.5% gems', category: 'special', baseCost: 40000, costMult: 2.05, maxLevel: 12, effect: (lvl) => ({ gemChance: lvl * 0.025 }), preview: (lvl) => `+${(lvl*2.5).toFixed(1)}% gems` },
+    { id: 'prestigeBeacon', name: 'Farol de Prestígio', icon: '👑', desc: 'x1.06 prestígio', category: 'special', baseCost: 250000, costMult: 2.2, maxLevel: 10, effect: (lvl) => ({ prestigeMult: Math.pow(1.06, lvl) }), preview: (lvl) => `x${Math.pow(1.06,lvl).toFixed(2)} prestígio` },
+    { id: 'hunterDrones', name: 'Drones Caçadores', icon: '🛸', desc: 'x1.08 boss loot', category: 'special', baseCost: 180000, costMult: 2.1, maxLevel: 10, effect: (lvl) => ({ bossRewardMult: Math.pow(1.08, lvl) }), preview: (lvl) => `x${Math.pow(1.08,lvl).toFixed(2)} boss` },
 ];
 
 const LOOTBOXES_DATA = [
@@ -3023,6 +3034,9 @@ const LOOTBOXES_DATA = [
     { id: 'rare', name: 'Caixa Rara', rarity: 'rare', rarityColor: '#4dabf7', icon: '🎊', cost: 2500, currency: 'novas', contents: [{type:'novas',weight:35,min:1000,max:5000},{type:'gem',weight:18,min:1,max:4},{type:'pet',weight:12,petId:'cosmicdog'},{type:'pet',weight:8,petId:'starcat'}] },
     { id: 'epic', name: 'Caixa Épica', rarity: 'epic', rarityColor: '#cc5de8', icon: '🎉', cost: 8000, currency: 'novas', contents: [{type:'novas',weight:25,min:5000,max:25000},{type:'gem',weight:20,min:2,max:8},{type:'pet',weight:15,petId:'dragonnova'},{type:'pet',weight:10,petId:'robot'}] },
     { id: 'legendary', name: 'Caixa Lendária', rarity: 'legendary', rarityColor: '#ffd700', icon: '👑', cost: 30000, currency: 'novas', contents: [{type:'novas',weight:18,min:50000,max:200000},{type:'gem',weight:22,min:5,max:20},{type:'pet',weight:15,petId:'alien'},{type:'prestigePoints',weight:12,min:1,max:5}] },
+    { id: 'stellar', name: 'Caixa Estelar', rarity: 'epic', rarityColor: '#845ef7', icon: '🌠', cost: 22000, currency: 'novas', contents: [{type:'novas',weight:30,min:12000,max:45000},{type:'gem',weight:25,min:4,max:10},{type:'pet',weight:12,petId:'pulsefox'},{type:'pet',weight:10,petId:'mechatitan'},{type:'prestigePoints',weight:8,min:1,max:2}] },
+    { id: 'quantum', name: 'Caixa Quântica', rarity: 'legendary', rarityColor: '#ffd43b', icon: '🧪', cost: 90000, currency: 'novas', contents: [{type:'novas',weight:18,min:100000,max:400000},{type:'gem',weight:22,min:10,max:30},{type:'pet',weight:12,petId:'voidowl'},{type:'pet',weight:10,petId:'sunphoenix'},{type:'prestigePoints',weight:15,min:2,max:6}] },
+    { id: 'celestial', name: 'Caixa Celestial', rarity: 'legendary', rarityColor: '#74c0fc', icon: '🌌', cost: 180, currency: 'gems', contents: [{type:'novas',weight:22,min:250000,max:1000000},{type:'gem',weight:15,min:50,max:120},{type:'pet',weight:15,petId:'quantumbee'},{type:'prestigePoints',weight:20,min:4,max:10}] },
 ];
 
 const AMPLIFIERS_DATA = [
@@ -3034,6 +3048,11 @@ const AMPLIFIERS_DATA = [
     { id: 'timeWarp', name: 'Distorção Temporal', icon: '⏰', duration: 45, cooldown: 300, cost: 750, currency: 'gems', effect: { timeMult: 10 }, stackable: false, description: 'Produção 10x velocidade (45s, CD 5min)' },
     { id: 'critMaster', name: 'Mestre Crítico', icon: '🎯', duration: 75, cooldown: 200, cost: 350, currency: 'gems', effect: { critChance: 0.5, critMult: 3 }, stackable: false, description: '50% crítico x3 (1.3min, CD 3.3min)' },
     { id: 'cosmicPower', name: 'Poder Cósmico', icon: '🌌', duration: 30, cooldown: 600, cost: 1000, currency: 'gems', effect: { cosmicMult: 10 }, stackable: false, description: 'PODER x10! (30s, CD 10min)' },
+    { id: 'hyperSync', name: 'Hiper Sincronia', icon: '🧬', duration: 60, cooldown: 180, cost: 650, currency: 'gems', effect: { clickMult: 3, passiveMult: 2 }, stackable: false, description: 'x3 clique e x2 passivo (60s, CD 3min)' },
+    { id: 'nebulaLuck', name: 'Sorte Nebulosa', icon: '🍇', duration: 90, cooldown: 220, cost: 550, currency: 'gems', effect: { gemChance: 0.35, critChance: 0.25, critMult: 2 }, stackable: false, description: '+35% gems e crítico reforçado (90s)' },
+    { id: 'novaCascade', name: 'Cascata de Novas', icon: '🌊', duration: 45, cooldown: 90, cost: 150000, currency: 'novas', effect: { clickMult: 2.5, passiveMult: 2.5 }, stackable: false, description: 'x2.5 clique e x2.5 passivo (45s, CD 90s)' },
+    { id: 'quantumOverclock', name: 'Overclock Quântico', icon: '🌀', duration: 35, cooldown: 260, cost: 900, currency: 'gems', effect: { passiveMult: 8, timeMult: 2 }, stackable: false, description: 'Loop temporal de renda (35s, CD 4.3min)' },
+    { id: 'singularityDrive', name: 'Motor da Singularidade', icon: '🕳️', duration: 20, cooldown: 420, cost: 1400, currency: 'gems', effect: { globalMult: 12 }, stackable: false, description: 'Explosão global x12 (20s, CD 7min)' },
 ];
 
 const PETS_DATA = [
@@ -3042,28 +3061,46 @@ const PETS_DATA = [
     { id: 'dragonnova', name: 'Dragão Nova', icon: '🐉', bonus: '+20% tudo', bonusType: 'globalMult', bonusVal: 1.20 },
     { id: 'robot', name: 'Robô Auxiliar', icon: '🤖', bonus: '+2 auto/s', bonusType: 'autoClick', bonusVal: 2 },
     { id: 'alien', name: 'Alienígena', icon: '👽', bonus: '+15% gems', bonusType: 'gemMult', bonusVal: 1.15 },
+    { id: 'pulsefox', name: 'Raposa Pulsar', icon: '🦊', bonus: '+30% clique', bonusType: 'clickMult', bonusVal: 1.30 },
+    { id: 'mechatitan', name: 'Mecha Titã', icon: '🦾', bonus: '+75/s', bonusType: 'passiveFlat', bonusVal: 75 },
+    { id: 'voidowl', name: 'Coruja do Vácuo', icon: '🦉', bonus: '+30% gems', bonusType: 'gemMult', bonusVal: 1.30 },
+    { id: 'sunphoenix', name: 'Fênix Solar', icon: '🔥', bonus: '+35% tudo', bonusType: 'globalMult', bonusVal: 1.35 },
+    { id: 'quantumbee', name: 'Abelha Quântica', icon: '🐝', bonus: '+5 auto/s', bonusType: 'autoClick', bonusVal: 5 },
 ];
 
 const ACHIEVEMENTS_DATA = [
-    { id: 'clicks100', name: 'Iniciante', icon: '🌱', check: () => G.totalClicks >= 100, reward: { novas: 50 } },
-    { id: 'clicks1k', name: 'Clicador', icon: '👆', check: () => G.totalClicks >= 1000, reward: { novas: 500 } },
-    { id: 'novas1m', name: 'Millionário', icon: '💰', check: () => G.totalNovasEarned >= 1000000, reward: { gems: 1 } },
-    { id: 'level10', name: 'Veterano', icon: '🏅', check: () => G.level >= 10, reward: { gems: 5 } },
-    { id: 'open10lb', name: 'Abridor', icon: '📦', check: () => G.lootboxStats.totalOpened >= 10, reward: { novas: 2000 } },
-    { id: 'meteor20', name: 'Caçador de Meteoros', icon: '☄️', check: () => (G.stats?.meteorsCollected || 0) >= 20, reward: { gems: 3 } },
-    { id: 'boss3', name: 'Matador de Bosses', icon: '⚔️', check: () => (G.stats?.bossesDefeated || 0) >= 3, reward: { gems: 8 } },
-    { id: 'artifact2', name: 'Curador de Relíquias', icon: '🧿', check: () => (G.stats?.artifactsBought || 0) >= 2, reward: { novas: 25000 } },
-    { id: 'missions5', name: 'Executor Diário', icon: '🛰️', check: () => (G.stats?.missionsClaimed || 0) >= 5, reward: { gems: 10 } },
-    { id: 'frenzy5', name: 'Velocidade da Luz', icon: '⭐', check: () => (G.stats?.frenzyActivations || 0) >= 5, reward: { prestigePoints: 1 } },
+    { id: 'clicks100', name: 'Iniciante', icon: '🌱', desc: 'Realize 100 cliques manuais.', check: () => G.totalClicks >= 100, reward: { novas: 50 } },
+    { id: 'clicks1k', name: 'Clicador', icon: '👆', desc: 'Realize 1.000 cliques.', check: () => G.totalClicks >= 1000, reward: { novas: 500 } },
+    { id: 'clicks10k', name: 'Metrônomo Estelar', icon: '🥁', desc: 'Realize 10.000 cliques.', check: () => G.totalClicks >= 10000, reward: { gems: 8 } },
+    { id: 'novas1m', name: 'Millionário', icon: '💰', desc: 'Acumule 1 milhão de novas totais.', check: () => G.totalNovasEarned >= 1000000, reward: { gems: 1 } },
+    { id: 'novas100m', name: 'Magnata Galáctico', icon: '🏦', desc: 'Acumule 100 milhões de novas.', check: () => G.totalNovasEarned >= 100000000, reward: { gems: 20, prestigePoints: 2 } },
+    { id: 'level10', name: 'Veterano', icon: '🏅', desc: 'Alcance o nível 10.', check: () => G.level >= 10, reward: { gems: 5 } },
+    { id: 'level25', name: 'Comandante', icon: '🧑‍🚀', desc: 'Alcance o nível 25.', check: () => G.level >= 25, reward: { gems: 12, prestigePoints: 1 } },
+    { id: 'open10lb', name: 'Abridor', icon: '📦', desc: 'Abra 10 lootboxes.', check: () => G.lootboxStats.totalOpened >= 10, reward: { novas: 2000 } },
+    { id: 'open50lb', name: 'Colecionador de Caixas', icon: '🎁', desc: 'Abra 50 lootboxes.', check: () => G.lootboxStats.totalOpened >= 50, reward: { gems: 10 } },
+    { id: 'meteor20', name: 'Caçador de Meteoros', icon: '☄️', desc: 'Colete 20 meteoros.', check: () => (G.stats?.meteorsCollected || 0) >= 20, reward: { gems: 3 } },
+    { id: 'meteor100', name: 'Senhor dos Fragmentos', icon: '🌠', desc: 'Colete 100 meteoros.', check: () => (G.stats?.meteorsCollected || 0) >= 100, reward: { gems: 12 } },
+    { id: 'boss3', name: 'Matador de Bosses', icon: '⚔️', desc: 'Derrote 3 bosses.', check: () => (G.stats?.bossesDefeated || 0) >= 3, reward: { gems: 8 } },
+    { id: 'boss10', name: 'Lenda da Arena', icon: '👹', desc: 'Derrote 10 bosses.', check: () => (G.stats?.bossesDefeated || 0) >= 10, reward: { gems: 20, prestigePoints: 2 } },
+    { id: 'artifact2', name: 'Curador de Relíquias', icon: '🧿', desc: 'Compre 2 relíquias.', check: () => (G.stats?.artifactsBought || 0) >= 2, reward: { novas: 25000 } },
+    { id: 'artifact6', name: 'Museu Cósmico', icon: '🏛️', desc: 'Compre 6 relíquias.', check: () => (G.stats?.artifactsBought || 0) >= 6, reward: { gems: 18 } },
+    { id: 'missions5', name: 'Executor Diário', icon: '🛰️', desc: 'Complete 5 missões diárias.', check: () => (G.stats?.missionsClaimed || 0) >= 5, reward: { gems: 10 } },
+    { id: 'missions15', name: 'Operador Orbital', icon: '📡', desc: 'Complete 15 missões diárias.', check: () => (G.stats?.missionsClaimed || 0) >= 15, reward: { gems: 20, prestigePoints: 2 } },
+    { id: 'frenzy5', name: 'Velocidade da Luz', icon: '⭐', desc: 'Ative Frenesi 5 vezes.', check: () => (G.stats?.frenzyActivations || 0) >= 5, reward: { prestigePoints: 1 } },
+    { id: 'frenzy20', name: 'Quase Incontrolável', icon: '🌟', desc: 'Ative Frenesi 20 vezes.', check: () => (G.stats?.frenzyActivations || 0) >= 20, reward: { gems: 15, prestigePoints: 3 } },
 ];
 
 const ROULETTE_PRIZES = [
-    { label: '500 ⭐', type: 'novas', value: 500, weight: 25 },
-    { label: '1000 ⭐', type: 'novas', value: 1000, weight: 20 },
-    { label: '2500 ⭐', type: 'novas', value: 2500, weight: 15 },
-    { label: '1 💎', type: 'gem', value: 1, weight: 15 },
-    { label: 'Pet 🐾', type: 'pet', petId: 'starcat', weight: 10 },
-    { label: '5000 ⭐!', type: 'novas', value: 5000, weight: 15 },
+    { label: '500 ⭐', type: 'novas', value: 500, weight: 22 },
+    { label: '1000 ⭐', type: 'novas', value: 1000, weight: 18 },
+    { label: '2500 ⭐', type: 'novas', value: 2500, weight: 14 },
+    { label: '10000 ⭐!', type: 'novas', value: 10000, weight: 10 },
+    { label: '1 💎', type: 'gem', value: 1, weight: 14 },
+    { label: '3 💎', type: 'gem', value: 3, weight: 10 },
+    { label: '1 👑', type: 'prestigePoints', value: 1, weight: 5 },
+    { label: 'Pet 🐱', type: 'pet', petId: 'starcat', weight: 5 },
+    { label: 'Pet 🦉', type: 'pet', petId: 'voidowl', weight: 1 },
+    { label: 'Pet 🐝', type: 'pet', petId: 'quantumbee', weight: 1 },
 ];
 
 const ARTIFACTS_DATA = [
@@ -3073,6 +3110,10 @@ const ARTIFACTS_DATA = [
     { id: 'meteorMagnet', name: 'Ímã de Meteoros', icon: '🧲', cost: 60, desc: 'Puxa meteoros mais valiosos durante eventos cósmicos.', effects: ['+40% valor de meteoros'], effect: { meteorMult: 1.4 } },
     { id: 'hunterSeal', name: 'Selo do Caçador', icon: '⚔️', cost: 80, desc: 'Marca chefes derrotados e aumenta as recompensas recebidas.', effects: ['+50% recompensa de boss'], effect: { bossRewardMult: 1.5 } },
     { id: 'crownEngine', name: 'Motor da Coroa', icon: '👑', cost: 120, desc: 'Converte explosões supernovas em prestígio permanente.', effects: ['+20% ganho de prestígio'], effect: { prestigeMult: 1.2 } },
+    { id: 'starCodex', name: 'Códice Estelar', icon: '📘', cost: 150, desc: 'Concentra padrões antigos para tornar cada clique mais devastador.', effects: ['+75% poder de clique'], effect: { clickMult: 1.75 } },
+    { id: 'chronoMatrix', name: 'Matriz Crono', icon: '⏳', cost: 170, desc: 'Dobra linhas temporais produtivas para acelerar a renda base.', effects: ['+65% renda passiva'], effect: { passiveMult: 1.65 } },
+    { id: 'crystalBloom', name: 'Flor de Cristal', icon: '🌸', cost: 210, desc: 'Faz gems brotarem com mais frequência nos cliques.', effects: ['+5% chance base de gem'], effect: { gemChance: 0.05 } },
+    { id: 'royalInjector', name: 'Injetor Real', icon: '💉', cost: 260, desc: 'Destila supernovas antigas em prestígio puro.', effects: ['+35% ganho de prestígio'], effect: { prestigeMult: 1.35 } },
 ];
 
 const DAILY_MISSION_POOL = [
@@ -3084,6 +3125,12 @@ const DAILY_MISSION_POOL = [
     { id: 'amps2', icon: '⚡', title: 'Overclock', desc: 'Ative 2 amplificadores.', metricKey: 'ampsUsed', goal: 2, reward: { novas: 6000, gems: 1 } },
     { id: 'bomb1', icon: '💣', title: 'Detonação Controlada', desc: 'Use 1 Nova Bomba.', metricKey: 'bombsUsed', goal: 1, reward: { novas: 12000 } },
     { id: 'frenzy1', icon: '⭐', title: 'Estado de Frenesi', desc: 'Ative 1 Frenesi.', metricKey: 'frenzy', goal: 1, reward: { gems: 4 } },
+    { id: 'click1000', icon: '🖱️', title: 'Maratona de Cliques', desc: 'Faça 1.000 cliques manuais.', metricKey: 'clicks', goal: 1000, reward: { novas: 25000, gems: 4 } },
+    { id: 'earn1m', icon: '💫', title: 'Rota de Mineração', desc: 'Ganhe 1.000.000 de novas.', metricKey: 'novasEarned', goal: 1000000, reward: { novas: 150000, gems: 8 } },
+    { id: 'boss3', icon: '👹', title: 'Varredura de Chefes', desc: 'Derrote 3 bosses.', metricKey: 'bosses', goal: 3, reward: { gems: 10, prestigePoints: 2 } },
+    { id: 'artifact1', icon: '🧿', title: 'Colecionador de Relíquias', desc: 'Compre 1 relíquia.', metricKey: 'artifacts', goal: 1, reward: { gems: 6, novas: 50000 } },
+    { id: 'open8lb', icon: '🎁', title: 'Entrega Intergaláctica', desc: 'Abra 8 lootboxes.', metricKey: 'lootboxes', goal: 8, reward: { gems: 7, novas: 80000 } },
+    { id: 'prestige1', icon: '👑', title: 'Ascensão Celestial', desc: 'Faça 1 prestígio.', metricKey: 'prestiges', goal: 1, reward: { prestigePoints: 2, gems: 10 } },
 ];
 
 // ==========================================
@@ -3115,7 +3162,7 @@ let G = JSON.parse(JSON.stringify(DEFAULT_STATE));
 // ==========================================
 // INITIALIZATION
 // ==========================================
-console.log('%c🎮 SUPERNOVA CLICKER v12.0 - CARREGANDO...', 'color:#667eea;font-size:16px;font-weight:bold;');
+console.log('%c🎮 SUPERNOVA CLICKER v13.0 - CARREGANDO...', 'color:#667eea;font-size:16px;font-weight:bold;');
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ DOM carregado!');
@@ -3177,8 +3224,36 @@ function getMetricValue(metricKey) {
         case 'ampsUsed': return G.ampStats?.totalUsed || 0;
         case 'bombsUsed': return G.stats?.bombsUsed || 0;
         case 'frenzy': return G.stats?.frenzyActivations || 0;
+        case 'artifacts': return G.stats?.artifactsBought || 0;
+        case 'prestiges': return G.totalPrestiges || 0;
         default: return 0;
     }
+}
+
+function getActivePetData() {
+    return G.activePet ? PETS_DATA.find(p => p.id === G.activePet) : null;
+}
+
+function getUpgradeMultiplier(type) {
+    let mult = 1;
+    for (let upg of UPGRADES_DATA) {
+        const lvl = G.upgrades?.[upg.id] || 0;
+        if (!lvl) continue;
+        const eff = upg.effect(lvl);
+        if (eff?.[type] && eff[type] >= 1) mult *= eff[type];
+    }
+    return mult;
+}
+
+function getUpgradeFlatBonus(type) {
+    let total = 0;
+    for (let upg of UPGRADES_DATA) {
+        const lvl = G.upgrades?.[upg.id] || 0;
+        if (!lvl) continue;
+        const eff = upg.effect(lvl);
+        if (eff?.[type] && eff[type] < 1) total += eff[type];
+    }
+    return total;
 }
 
 function getArtifactMultiplier(type) {
@@ -3213,14 +3288,13 @@ function getAmplifierFlatBonus(type) {
 }
 
 function getGemDropChance() {
-    const luckyLvl = G.upgrades['lucky'] || 0;
-    let chance = luckyLvl * 0.05;
+    let chance = getUpgradeFlatBonus('gemChance');
     chance += getAmplifierFlatBonus('gemChance');
     chance += getArtifactFlatBonus('gemChance');
-    if (G.activePet) {
-        const pet = PETS_DATA.find(p => p.id === G.activePet);
-        if (pet && pet.bonusType === 'gemMult') chance *= pet.bonusVal;
-    }
+
+    const pet = getActivePetData();
+    if (pet && pet.bonusType === 'gemMult') chance *= pet.bonusVal;
+
     return Math.min(0.95, chance);
 }
 
@@ -3450,6 +3524,26 @@ function startGameLoops() {
             console.error('Erro no passive income:', e);
         }
     }, 1000);
+
+    // Auto-click pets loop
+    setInterval(function() {
+        try {
+            const pet = getActivePetData();
+            if (pet && pet.bonusType === 'autoClick' && pet.bonusVal > 0) {
+                const autoGain = Math.floor(getClickValue() * pet.bonusVal);
+                G.novas += autoGain;
+                G.totalNovasEarned += autoGain;
+                G.totalClicks += pet.bonusVal;
+                addExp(Math.max(1, Math.floor(autoGain / 8)));
+                if (Math.random() < Math.min(0.95, getGemDropChance() * 0.35)) {
+                    G.gems += 1;
+                }
+                updateAllDisplays();
+            }
+        } catch (e) {
+            console.error('Erro no auto click do pet:', e);
+        }
+    }, 1000);
     
     // Time played
     setInterval(function() {
@@ -3558,13 +3652,10 @@ function calculatePassiveIncome() {
         }
     }
     
-    // Pet bonus
-    if (G.activePet) {
-        const pet = PETS_DATA.find(p => p.id === G.activePet);
-        if (pet && pet.bonusType === 'passiveFlat') income += pet.bonusVal;
-    }
+    const pet = getActivePetData();
+    if (pet && pet.bonusType === 'passiveFlat') income += pet.bonusVal;
+    if (pet && pet.bonusType === 'globalMult') income *= pet.bonusVal;
     
-    // Amp and artifact bonuses
     income *= getAmplifierMultiplier('passiveMult');
     income *= getAmplifierMultiplier('globalMult');
     income *= getAmplifierMultiplier('timeMult');
@@ -3576,37 +3667,38 @@ function calculatePassiveIncome() {
 
 function getClickValue() {
     let val = 1;
-    
-    val += (G.upgrades['power'] || 0) * 2;
-    val += (G.upgrades['superClick'] || 0) * 10;
-    
-    const multiLvl = G.upgrades['multi'] || 0;
-    if (multiLvl > 0) val *= Math.pow(1.15, multiLvl);
-    
-    // Crit
-    const critLvl = G.upgrades['critical'] || 0;
-    const critChance = Math.min(0.95, (critLvl * 0.02) + getAmplifierFlatBonus('critChance'));
-    const critMult = (2 + critLvl * 0.5) * getAmplifierMultiplier('critMult');
-    if (Math.random() < critChance) {
+    let clickMult = 1;
+    let critChance = getAmplifierFlatBonus('critChance');
+    let critDamageBonus = 0;
+
+    for (let upg of UPGRADES_DATA) {
+        const lvl = G.upgrades[upg.id] || 0;
+        if (!lvl) continue;
+        const eff = upg.effect(lvl);
+        if (eff.perClick) val += eff.perClick;
+        if (eff.clickMult) clickMult *= eff.clickMult;
+        if (eff.critChance) critChance += eff.critChance;
+        if (eff.critDmg) critDamageBonus += eff.critDmg;
+    }
+
+    val *= clickMult;
+
+    const critMult = (2 + critDamageBonus / 10) * getAmplifierMultiplier('critMult');
+    if (Math.random() < Math.min(0.95, critChance)) {
         val *= critMult;
     }
     
-    // Pets
-    if (G.activePet) {
-        const pet = PETS_DATA.find(p => p.id === G.activePet);
-        if (pet && pet.bonusType === 'clickMult') val *= pet.bonusVal;
-    }
+    const pet = getActivePetData();
+    if (pet && pet.bonusType === 'clickMult') val *= pet.bonusVal;
+    if (pet && pet.bonusType === 'globalMult') val *= pet.bonusVal;
     
-    // Prestige
     val *= (1 + G.prestigePoints * 0.05);
     
-    // Amplifiers
     val *= getAmplifierMultiplier('clickMult');
     val *= getAmplifierMultiplier('goldMult');
     val *= getAmplifierMultiplier('globalMult');
     val *= getAmplifierMultiplier('cosmicMult');
     
-    // Artifacts
     val *= getArtifactMultiplier('clickMult');
     
     return Math.floor(val);
@@ -3633,7 +3725,7 @@ function getTotalActiveAmplifiers() {
 }
 
 function getTotalAmplifierMultiplier() {
-    return getAmplifierMultiplier('clickMult') * getAmplifierMultiplier('passiveMult') * getAmplifierMultiplier('globalMult');
+    return getAmplifierMultiplier('clickMult') * getAmplifierMultiplier('passiveMult') * getAmplifierMultiplier('globalMult') * getAmplifierMultiplier('timeMult') * getAmplifierMultiplier('cosmicMult');
 }
 
 function addExp(amount) {
@@ -3870,18 +3962,23 @@ function rollLootboxPrize(lb) {
 
 function resolveContent(content, lb) {
     switch(content.type) {
-        case 'novas':
+        case 'novas': {
             const amount = Math.floor(content.min + Math.random() * (content.max - content.min));
             G.novas += amount;
             G.totalNovasEarned += amount;
             G.lootboxStats.totalValue += amount;
             return { type: 'novas', name: 'Supernovas!', valueStr: `+${formatNum(amount)} ⭐`, icon: '⭐', rarity: lb.rarity };
-            
-        case 'gem':
+        }
+        case 'gem': {
             const gems = content.min ? Math.floor(content.min + Math.random() * ((content.max||content.min) - content.min)) : (content.value || 1);
             G.gems += gems;
             return { type: 'gem', name: 'Gems!', valueStr: `+${gems} 💎`, icon: '💎', rarity: lb.rarity };
-            
+        }
+        case 'prestigePoints': {
+            const points = content.min ? Math.floor(content.min + Math.random() * ((content.max||content.min) - content.min + 1)) : (content.value || 1);
+            G.prestigePoints += points;
+            return { type: 'prestigePoints', name: 'Prestígio!', valueStr: `+${points} 👑`, icon: '👑', rarity: lb.rarity };
+        }
         case 'pet':
             if (!G.petsOwned.includes(content.petId)) {
                 G.petsOwned.push(content.petId);
@@ -3891,7 +3988,6 @@ function resolveContent(content, lb) {
                 G.gems += 3;
                 return { type: 'gem', name: 'Pet Repetido!', valueStr: '+3 💎', icon: '💎', rarity: lb.rarity };
             }
-            
         case 'nothing':
         default:
             return { type: 'nothing', name: 'Nada...', valueStr: '😢', icon: '💨', rarity: lb.rarity };
@@ -4075,10 +4171,10 @@ function checkAchievements() {
     for (let ach of ACHIEVEMENTS_DATA) {
         if (!G.achievementsUnlocked.includes(ach.id) && ach.check()) {
             G.achievementsUnlocked.push(ach.id);
-            if (ach.reward.novas) G.novas += ach.reward.novas;
-            if (ach.reward.gems) G.gems += ach.reward.gems;
-            showNotification(`🏆 Conquista: ${ach.name}!`);
+            applyReward(ach.reward);
+            showNotification(`🏆 Conquista: ${ach.name}! ${formatReward(ach.reward)}`);
             renderAchievements();
+            updateAllDisplays();
         }
     }
 }
@@ -4119,10 +4215,18 @@ function spinRoulette() {
             if (r<=0) { prize = p; break; }
         }
         
-        if (prize.type==='novas') G.novas+=prize.value;
-        else if (prize.type==='gem') G.gems+=prize.value;
-        else if (prize.type==='pet'&&!G.petsOwned.includes(prize.petId)) G.petsOwned.push(prize.petId);
-        else if (prize.type==='pet') G.gems+=3;
+        if (prize.type === 'novas') {
+            G.novas += prize.value;
+            G.totalNovasEarned += prize.value;
+        } else if (prize.type === 'gem') {
+            G.gems += prize.value;
+        } else if (prize.type === 'prestigePoints') {
+            G.prestigePoints += prize.value;
+        } else if (prize.type === 'pet' && !G.petsOwned.includes(prize.petId)) {
+            G.petsOwned.push(prize.petId);
+        } else if (prize.type === 'pet') {
+            G.gems += 3;
+        }
         
         showNotification(`🎰 ${prize.label}`);
         
@@ -4135,7 +4239,8 @@ function spinRoulette() {
 
 function doPrestige() {
     const baseGain = Math.floor(Math.sqrt(Math.max(0, G.totalNovasEarned)/100000))+G.totalPrestiges;
-    const gain = Math.max(0, Math.floor(baseGain * getArtifactMultiplier('prestigeMult')));
+    const totalPrestigeMult = getArtifactMultiplier('prestigeMult') * getUpgradeMultiplier('prestigeMult');
+    const gain = Math.max(0, Math.floor(baseGain * totalPrestigeMult));
     if (gain<=0) {
         showNotification('❌ Precisa de 1M+ de novas totais!');
         return;
@@ -4162,7 +4267,7 @@ function doPrestige() {
 // ==========================================
 function updateAllDisplays() {
     const prestigeBase = Math.floor(Math.sqrt(Math.max(0, G.totalNovasEarned) / 100000)) + G.totalPrestiges;
-    const prestigeGainValue = Math.max(0, Math.floor(prestigeBase * getArtifactMultiplier('prestigeMult')));
+    const prestigeGainValue = Math.max(0, Math.floor(prestigeBase * getArtifactMultiplier('prestigeMult') * getUpgradeMultiplier('prestigeMult')));
     const elements = {
         statNovas: formatNum(G.novas),
         statPerSec: formatNum(calculatePassiveIncome()),
@@ -4325,7 +4430,7 @@ function confirmReset() {
 // ==========================================
 // DEV LOG SYSTEM
 // ==========================================
-const CURRENT_VERSION = '12.0';
+const CURRENT_VERSION = '13.0';
 
 function initDevLogSystem() {
     console.log('📋 Inicializando Dev Log...');
@@ -4403,8 +4508,8 @@ document.addEventListener('keydown', function(e) {
 
 // ---------- COMBO SYSTEM ----------
 const COMBO_TIMEOUT = 2500; // ms to reset combo
-const COMBO_THRESHOLDS = [1, 3, 5, 10, 20, 50]; // clicks per combo tier
-const COMBO_MULTS = [1, 1.5, 2, 3, 5, 10];
+const COMBO_THRESHOLDS = [1, 3, 5, 10, 20, 50, 100, 200]; // clicks per combo tier
+const COMBO_MULTS = [1, 1.5, 2, 3, 5, 10, 15, 25];
 
 let comboState = {
     clicks: 0,
@@ -4638,6 +4743,9 @@ const BOSSES = [
     { name: 'Buraco Negro', sprite: '🕳️', hpBase: 5000, reward: (hp) => ({ novas: hp * 150, gems: 15, prestigePoints: 1 }), rewardText: 'Novas + 15 💎 + 1 Prestígio' },
     { name: 'Dragão Cósmico', sprite: '🐲', hpBase: 15000, reward: (hp) => ({ novas: hp * 300, gems: 30, prestigePoints: 3 }), rewardText: 'Novas + 30 💎 + 3 Prestígio' },
     { name: 'SUPERNOVA BOSS', sprite: '💀', hpBase: 50000, reward: (hp) => ({ novas: hp * 500, gems: 100, prestigePoints: 10 }), rewardText: 'Novas + 100 💎 + 10 Prestígio' },
+    { name: 'Titã de Quasares', sprite: '🪐', hpBase: 200000, reward: (hp) => ({ novas: hp * 650, gems: 160, prestigePoints: 14 }), rewardText: 'Novas + 160 💎 + 14 Prestígio' },
+    { name: 'Imperatriz do Vácuo', sprite: '👸', hpBase: 750000, reward: (hp) => ({ novas: hp * 900, gems: 280, prestigePoints: 25 }), rewardText: 'Novas + 280 💎 + 25 Prestígio' },
+    { name: 'Devorador de Galáxias', sprite: '🐙', hpBase: 2500000, reward: (hp) => ({ novas: hp * 1400, gems: 500, prestigePoints: 50 }), rewardText: 'Novas + 500 💎 + 50 Prestígio' },
 ];
 
 let bossState = {
@@ -4657,7 +4765,10 @@ function getBossTier() {
     if (novas < 100000) return 1;
     if (novas < 1000000) return 2;
     if (novas < 10000000) return 3;
-    return 4;
+    if (novas < 100000000) return 4;
+    if (novas < 1000000000) return 5;
+    if (novas < 10000000000) return 6;
+    return 7;
 }
 
 function startBossBattle() {
@@ -4752,7 +4863,7 @@ function bossVictory() {
     clearInterval(bossState.timerInterval);
 
     const reward = bossState.boss.reward(bossState.maxHp);
-    const bossMult = getArtifactMultiplier('bossRewardMult');
+    const bossMult = getArtifactMultiplier('bossRewardMult') * getUpgradeMultiplier('bossRewardMult');
     const finalReward = {
         novas: Math.floor((reward.novas || 0) * bossMult),
         gems: Math.max(0, Math.floor((reward.gems || 0) * bossMult)),
@@ -5191,5 +5302,6 @@ console.log('%c   → Ou pressione as teclas: S-U-P-E-R-N-O-V-A  (sem foco em ca
 
 
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>

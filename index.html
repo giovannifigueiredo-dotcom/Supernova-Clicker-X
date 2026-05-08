@@ -176,6 +176,7 @@
                 <button onclick="switchTab('quests')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-quests"><i class="fa-solid fa-list-check"></i> TAREFAS</button>
                 <button onclick="switchTab('portal')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-portal"><i class="fa-solid fa-dharmachakra"></i> PORTAL</button>
                 <button onclick="switchTab('prestige')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-prestige"><i class="fa-solid fa-infinity"></i> OMEGA</button>
+                <button onclick="switchTab('system')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-system"><i class="fa-solid fa-gear"></i> SISTEMA</button>
             </div>
 
             <div class="flex-1 overflow-y-auto p-4 space-y-3" id="content-area">
@@ -453,10 +454,67 @@
         }
 
         function renderContent() {
-            const container = document.getElementById('content-area');
-            container.innerHTML = '';
+            const cont = document.getElementById('content-area');
+            cont.innerHTML = '';
 
-            if (currentTab === 'structures') {
+            if (currentTab === 'system') {
+                const totalStructures = Object.values(state.structures).reduce((a, b) => a + b, 0);
+                const clickValue = getClickValue();
+                const eps = getEPS();
+                
+                cont.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="glass-panel p-4">
+                            <h3 class="text-sm font-bold text-accent mb-3"><i class="fa-solid fa-chart-simple"></i> STATUS DO EXPLORADOR</h3>
+                            <div class="grid grid-cols-1 gap-2 text-xs">
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-400">Energia Total (Vida Toda)</span>
+                                    <span class="text-yellow-400 font-bold">${formatNum(state.totalEnergyLifetime)}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-400">Total de Cliques</span>
+                                    <span class="text-blue-400 font-bold">${state.clicks.toLocaleString()}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-400">Valor por Clique</span>
+                                    <span class="text-green-400 font-bold">${formatNum(clickValue)}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-400">Energia por Segundo (EPS)</span>
+                                    <span class="text-cyan-400 font-bold">${formatNum(eps)}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-400">Estruturas Construídas</span>
+                                    <span class="text-purple-400 font-bold">${totalStructures}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-400">Conquistas</span>
+                                    <span class="text-yellow-500 font-bold">${state.achievements.length} / ${DATA.achievements.length}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Matéria Escura Acumulada</span>
+                                    <span class="text-pink-500 font-bold">${state.darkMatter}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel p-4">
+                            <h3 class="text-sm font-bold text-blue-400 mb-3"><i class="fa-solid fa-floppy-disk"></i> GERENCIAR DADOS</h3>
+                            <div class="grid grid-cols-1 gap-3">
+                                <button onclick="exportSave()" class="w-full bg-blue-600 hover:bg-blue-500 py-2 rounded text-xs font-bold transition-colors">
+                                    <i class="fa-solid fa-download mr-2"></i> EXPORTAR SAVE (COPIAR)
+                                </button>
+                                <button onclick="importSave()" class="w-full bg-purple-600 hover:bg-purple-500 py-2 rounded text-xs font-bold transition-colors">
+                                    <i class="fa-solid fa-upload mr-2"></i> IMPORTAR SAVE (COLAR)
+                                </button>
+                                <button onclick="hardReset()" class="w-full bg-red-900/50 hover:bg-red-600 py-2 rounded text-xs font-bold text-red-200 transition-all border border-red-500/30">
+                                    <i class="fa-solid fa-trash-can mr-2"></i> RESET TOTAL (CUIDADO)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (currentTab === 'structures') {
                 const costMult = state.relics.includes('r2') ? DATA.relics.find(r=>r.id==='r2').val : 1;
                 DATA.structures.forEach(s => {
                     const count = state.structures[s.id] || 0;
@@ -877,6 +935,40 @@
 
         // --- 8. SAVE SYSTEM ---
         function saveGame() { localStorage.setItem(CONFIG.SAVE_KEY, JSON.stringify(state)); }
+
+        window.exportSave = function() {
+            const saveStr = btoa(JSON.stringify(state));
+            navigator.clipboard.writeText(saveStr).then(() => {
+                showNotification("Save copiado para a área de transferência!", "success");
+            }).catch(err => {
+                alert("Erro ao copiar save: " + saveStr);
+            });
+        };
+
+        window.importSave = function() {
+            const saveStr = prompt("Cole o código do seu save aqui:");
+            if (!saveStr) return;
+            try {
+                const decoded = JSON.parse(atob(saveStr));
+                if (decoded && typeof decoded === 'object') {
+                    state = decoded;
+                    saveGame();
+                    location.reload();
+                }
+            } catch (e) {
+                showNotification("Código de save inválido!", "error");
+            }
+        };
+
+        window.hardReset = function() {
+            if (confirm("VOCÊ TEM CERTEZA? Isso apagará TODO o seu progresso permanentemente, incluindo conquistas e matéria escura!")) {
+                if (confirm("ÚLTIMO AVISO: Não há volta. Confirmar reset total?")) {
+                    localStorage.removeItem(CONFIG.SAVE_KEY);
+                    location.reload();
+                }
+            }
+        };
+
         function loadGame() {
             const saved = localStorage.getItem(CONFIG.SAVE_KEY);
             if (saved) {

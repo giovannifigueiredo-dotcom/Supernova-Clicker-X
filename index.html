@@ -75,6 +75,32 @@
         
         .log-entry { animation: slideIn 0.3s ease-out; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* Dev Log Styles */
+        .dev-log-btn {
+            position: fixed; bottom: 20px; right: 20px;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: var(--primary); color: white;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+            z-index: 100; transition: all 0.3s;
+        }
+        .dev-log-btn:hover { transform: scale(1.1) rotate(15deg); background: var(--secondary); }
+        
+        .dev-log-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            display: none; align-items: center; justify-content: center;
+            z-index: 200; padding: 20px;
+        }
+        .dev-log-content {
+            background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1);
+            width: 100%; max-width: 600px; max-height: 80vh;
+            border-radius: 1.5rem; overflow: hidden; display: flex; flex-col;
+        }
+        .dev-log-header { padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .dev-log-body { padding: 1.5rem; overflow-y: auto; flex: 1; }
+        .version-tag { background: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
     </style>
 </head>
 <body class="flex flex-col">
@@ -160,6 +186,79 @@
 
     <!-- Notificações Float -->
     <div id="notif-container" class="fixed bottom-4 left-1/2 -translate-x-1/2 flex flex-col gap-2 pointer-events-none z-50"></div>
+
+    <!-- Dev Log Button & Modal -->
+    <div class="dev-log-btn" onclick="toggleDevLog(true)" title="Dev Log">
+        <i class="fa-solid fa-scroll text-xl"></i>
+    </div>
+
+    <div id="dev-log-modal" class="dev-log-modal" onclick="if(event.target === this) toggleDevLog(false)">
+        <div class="dev-log-content glass-panel flex flex-col">
+            <div class="dev-log-header">
+                <h2 class="text-xl font-bold text-white"><i class="fa-solid fa-code-branch text-accent mr-2"></i> Diário de Desenvolvimento</h2>
+                <button onclick="toggleDevLog(false)" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+            <div class="dev-log-body space-y-6">
+                <!-- v15.0 -->
+                <div class="border-l-2 border-accent pl-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="version-tag">v15.0</span>
+                        <span class="text-xs text-gray-400">08/05/2026</span>
+                    </div>
+                    <h3 class="font-bold text-white mb-1">Expansão Omniversal</h3>
+                    <ul class="text-xs text-gray-400 space-y-1 list-disc list-inside">
+                        <li>Adicionado sistema de <span class="text-purple-400">Matéria Escura</span> e Prestígio.</li>
+                        <li>Implementado <span class="text-pink-400">Cápsulas Cósmicas</span> (Lootboxes).</li>
+                        <li>Novo sistema de <span class="text-yellow-400">Mascotes e Relíquias</span> com órbitas visuais.</li>
+                        <li>Interface reformulada com TailwindCSS e efeitos de vidro.</li>
+                    </ul>
+                </div>
+                <!-- v10.0 -->
+                <div class="border-l-2 border-blue-500 pl-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="version-tag bg-blue-500">v10.0</span>
+                        <span class="text-xs text-gray-400">Janeiro 2026</span>
+                    </div>
+                    <h3 class="font-bold text-white mb-1">A Era Galáctica</h3>
+                    <ul class="text-xs text-gray-400 space-y-1 list-disc list-inside">
+                        <li>Introdução do <span class="text-blue-400">Log Cósmico</span> para eventos em tempo real.</li>
+                        <li>Adicionadas estruturas avançadas: Colisor Cósmico e Micro-Buraco Negro.</li>
+                        <li>Sistema de conquistas básicas implementado.</li>
+                    </ul>
+                </div>
+                <!-- v5.0 -->
+                <div class="border-l-2 border-green-500 pl-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="version-tag bg-green-500">v5.0</span>
+                        <span class="text-xs text-gray-400">Outubro 2025</span>
+                    </div>
+                    <h3 class="font-bold text-white mb-1">Sistemas Solares</h3>
+                    <ul class="text-xs text-gray-400 space-y-1 list-disc list-inside">
+                        <li>Primeira versão com salvamento local (localStorage).</li>
+                        <li>Adicionado sistema de multiplicadores de clique.</li>
+                        <li>Balanceamento de EPS (Energia por Segundo).</li>
+                    </ul>
+                </div>
+                <!-- v1.0 -->
+                <div class="border-l-2 border-gray-500 pl-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="version-tag bg-gray-500">v1.0</span>
+                        <span class="text-xs text-gray-400">Agosto 2025</span>
+                    </div>
+                    <h3 class="font-bold text-white mb-1">Big Bang</h3>
+                    <ul class="text-xs text-gray-400 space-y-1 list-disc list-inside">
+                        <li>Lançamento inicial: Mecânica básica de clique e compra de estruturas.</li>
+                        <li>Interface simples em HTML/CSS puro.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="p-4 bg-white/5 text-center">
+                <p class="text-[10px] text-gray-500 italic">Obrigado por jogar Supernova Clicker!</p>
+            </div>
+        </div>
+    </div>
 
     <script>
         // --- 1. DADOS E CONFIGURAÇÃO ---
@@ -800,6 +899,12 @@
             state.missions.forEach(m => { if(m.type === 'click') m.progress++; });
             if(currentTab === 'quests') renderContent();
         });
+
+        // Dev Log Toggle
+        window.toggleDevLog = function(show) {
+            const modal = document.getElementById('dev-log-modal');
+            modal.style.display = show ? 'flex' : 'none';
+        };
 
         // Initialize
         window.onload = init;

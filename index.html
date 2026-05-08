@@ -454,8 +454,8 @@
         }
 
         function renderContent() {
-            const cont = document.getElementById('content-area');
-            cont.innerHTML = '';
+            const container = document.getElementById('content-area');
+            container.innerHTML = '';
 
             if (currentTab === 'system') {
                 const totalStructures = Object.values(state.structures).reduce((a, b) => a + b, 0);

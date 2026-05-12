@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supernova Clicker v15.0 - OMNIVERSAL EXPANSION</title>
+    <title>Supernova Clicker v17.0 - AUTO UPGRADE EDITION</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #6366f1; --secondary: #a855f7; --accent: #ec4899;
             --background: #050505; --card-bg: rgba(20, 20, 35, 0.85);
+            --auto-color: #10b981; --auto-glow: rgba(16, 185, 129, 0.4);
         }
 
         body {
@@ -44,7 +45,7 @@
             animation: pulse 4s infinite ease-in-out; position: relative; z-index: 10;
         }
         .sun-core:active { transform: scale(0.95); }
-        
+
         .orbit {
             position: absolute; width: 100%; height: 100%; border-radius: 50%;
             border: 1px dashed rgba(255,255,255,0.2); animation: spin linear infinite;
@@ -54,7 +55,7 @@
             border-radius: 50%; top: -15px; left: calc(50% - 15px);
             box-shadow: 0 0 15px var(--accent); display: flex; align-items: center; justify-content: center; font-size: 12px;
         }
-        
+
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes pulse { 0%, 100% { box-shadow: 0 0 60px rgba(255, 140, 0, 0.4); } 50% { box-shadow: 0 0 100px rgba(255, 140, 0, 0.8); } }
 
@@ -70,9 +71,6 @@
         .tab-btn { transition: all 0.2s; }
         .tab-btn.active { border-bottom: 2px solid var(--accent); color: var(--accent); background: rgba(255,255,255,0.05); }
 
-        /* Roulette */
-        .roulette-wheel { transition: transform 3s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        
         .log-entry { animation: slideIn 0.3s ease-out; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
 
@@ -86,7 +84,7 @@
             z-index: 100; transition: all 0.3s;
         }
         .dev-log-btn:hover { transform: scale(1.1) rotate(15deg); background: var(--secondary); }
-        
+
         .dev-log-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
@@ -95,12 +93,84 @@
         }
         .dev-log-content {
             background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1);
-            width: 100%; max-width: 600px; max-height: 80vh;
-            border-radius: 1.5rem; overflow: hidden; display: flex; flex-col;
+            width: 100%; max-width: 650px; max-height: 85vh;
+            border-radius: 1.5rem; overflow: hidden; display: flex; flex-direction: column;
         }
         .dev-log-header { padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
         .dev-log-body { padding: 1.5rem; overflow-y: auto; flex: 1; }
         .version-tag { background: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
+        .version-tag-new { background: var(--auto-color); padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
+
+        /* ========== AUTO UPGRADES SYSTEM ========== */
+        .auto-panel {
+            background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(5,5,5,0.9) 100%);
+            border: 1px solid rgba(16,185,129,0.3); border-radius: 1rem;
+        }
+
+        .auto-toggle {
+            position: relative; width: 44px; height: 24px; cursor: pointer;
+            background: rgba(255,255,255,0.1); border-radius: 12px;
+            transition: background 0.3s; flex-shrink: 0;
+        }
+        .auto-toggle.on { background: var(--auto-color); box-shadow: 0 0 10px var(--auto-glow); }
+        .auto-toggle::after {
+            content: ''; position: absolute; top: 2px; left: 2px;
+            width: 20px; height: 20px; border-radius: 50%; background: white;
+            transition: transform 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+        .auto-toggle.on::after { transform: translateX(20px); }
+
+        .auto-card {
+            background: rgba(16,185,129,0.05);
+            border: 1px solid rgba(16,185,129,0.15);
+            border-radius: 0.75rem; padding: 0.75rem;
+            transition: all 0.2s;
+        }
+        .auto-card:hover { border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.1); }
+        .auto-card.active { border-color: var(--auto-color); background: rgba(16,185,129,0.15); box-shadow: 0 0 15px rgba(16,185,129,0.2); }
+        .auto-card.locked { opacity: 0.4; filter: grayscale(0.8); }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+            transform-origin: center;
+        }
+
+        @keyframes autoPulse {
+            0%, 100% { box-shadow: 0 0 5px var(--auto-glow); }
+            50% { box-shadow: 0 0 20px var(--auto-glow), 0 0 40px var(--auto-glow); }
+        }
+        .auto-active-glow { animation: autoPulse 2s infinite; }
+
+        .speed-badge {
+            font-size: 9px; padding: 1px 6px; border-radius: 9999px;
+            font-weight: bold; letter-spacing: 0.05em;
+        }
+
+        .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .stat-row:last-child { border-bottom: none; }
+
+        /* Otimizações de Performance */
+        .will-change-transform { will-change: transform; }
+        .contain-layout { contain: layout style paint; }
+
+        /* Auto panel tab highlight */
+        #tab-auto { position: relative; }
+        #tab-auto::after {
+            content: 'NEW';
+            position: absolute; top: 4px; right: 2px;
+            font-size: 7px; background: var(--auto-color);
+            color: black; font-weight: 900; padding: 1px 3px;
+            border-radius: 3px; letter-spacing: 0.05em;
+        }
+
+        @keyframes gearSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .gear-spin { animation: gearSpin 3s linear infinite; }
+        .gear-spin-slow { animation: gearSpin 6s linear infinite; }
+
+        .upgrade-tier-1 { border-left: 3px solid #6366f1; }
+        .upgrade-tier-2 { border-left: 3px solid #a855f7; }
+        .upgrade-tier-3 { border-left: 3px solid #ec4899; }
+        .upgrade-tier-4 { border-left: 3px solid #10b981; }
     </style>
 </head>
 <body class="flex flex-col">
@@ -122,11 +192,17 @@
             <p class="text-xs text-gray-400 uppercase tracking-wider">Matéria Escura</p>
             <p id="darkmatter-display" class="text-2xl font-black text-purple-500"><i class="fa-solid fa-atom"></i> 0</p>
         </div>
+        <!-- Auto Status Indicator -->
+        <div class="text-center">
+            <p class="text-xs text-gray-400 uppercase tracking-wider">Auto-Sistema</p>
+            <p id="auto-status-display" class="text-xs font-black text-gray-500">INATIVO</p>
+            <p id="auto-count-display" class="text-xs text-emerald-400">0 ativos</p>
+        </div>
     </div>
 
     <!-- Main Content Area -->
     <div class="flex flex-1 p-4 gap-4 overflow-hidden">
-        
+
         <!-- Sidebar Esquerda: Ações Ativas & Log -->
         <div class="w-1/4 flex flex-col gap-4">
             <!-- Amplificadores Ativos -->
@@ -148,14 +224,14 @@
 
         <!-- Centro: Área de Clique Principal -->
         <div class="flex-1 flex flex-col items-center justify-center relative">
-            
+
             <div class="sun-container">
                 <div id="pet-orbit-container">
                     <!-- Orbitas e Pets gerados via JS -->
                 </div>
                 <div id="main-click-target" class="sun-core"></div>
             </div>
-            
+
             <div class="mt-12 w-full max-w-md">
                 <div class="flex justify-between text-xs mb-1">
                     <span id="rank-name" class="font-bold text-yellow-300">Proto-Estrela</span>
@@ -171,12 +247,13 @@
         <div class="w-1/3 glass-panel flex flex-col overflow-hidden">
             <div class="flex border-b border-white/10 overflow-x-auto shrink-0">
                 <button onclick="switchTab('structures')" class="tab-btn flex-1 p-3 text-xs font-bold active" id="tab-structures"><i class="fa-solid fa-hammer"></i> FORJA</button>
-                <button onclick="switchTab('upgrades')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-upgrades"><i class="fa-solid fa-flask"></i> PESQUISA</button>
+                <button onclick="switchTab('upgrades')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-upgrades"><i class="fa-solid fa-flask"></i> PESQ.</button>
+                <button onclick="switchTab('auto')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-auto"><i class="fa-solid fa-robot"></i> AUTO</button>
                 <button onclick="switchTab('lab')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-lab"><i class="fa-solid fa-paw"></i> LAB</button>
-                <button onclick="switchTab('quests')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-quests"><i class="fa-solid fa-list-check"></i> TAREFAS</button>
+                <button onclick="switchTab('quests')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-quests"><i class="fa-solid fa-list-check"></i> METAS</button>
                 <button onclick="switchTab('portal')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-portal"><i class="fa-solid fa-dharmachakra"></i> PORTAL</button>
                 <button onclick="switchTab('prestige')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-prestige"><i class="fa-solid fa-infinity"></i> OMEGA</button>
-                <button onclick="switchTab('system')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-system"><i class="fa-solid fa-gear"></i> SISTEMA</button>
+                <button onclick="switchTab('system')" class="tab-btn flex-1 p-3 text-xs font-bold" id="tab-system"><i class="fa-solid fa-gear"></i> SYS</button>
             </div>
 
             <div class="flex-1 overflow-y-auto p-4 space-y-3" id="content-area">
@@ -202,496 +279,740 @@
                 </button>
             </div>
             <div class="dev-log-body space-y-6">
-                <!-- v16.0 -->
-                <div class="border-l-2 border-indigo-500 pl-4">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="version-tag bg-indigo-500">v16.0</span>
-                        <span class="text-xs text-gray-400">08/05/2026</span>
+                <!-- ===================== v17.0 ===================== -->
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="version-tag-new">v17.0 - AUTO UPGRADE EDITION</span>
+                        <span class="text-[10px] text-gray-500">12 de Maio, 2026</span>
                     </div>
-                    <h3 class="font-bold text-white mb-1">Central de Comando</h3>
-                    <ul class="text-xs text-gray-400 space-y-1 list-disc list-inside">
-                        <li>Nova aba de <span class="text-indigo-400">Sistema</span> implementada.</li>
-                        <li>Adicionado painel de <span class="text-green-400">Status Detalhado</span> do jogador.</li>
-                        <li>Sistema de <span class="text-blue-400">Salvamento Manual</span> (Exportar/Importar código).</li>
-                        <li>Correções de estabilidade na renderização de abas.</li>
+                    <p class="text-sm font-bold text-emerald-400 mb-2">🤖 SISTEMA DE AUTO-MELHORIAS (NOVO):</p>
+                    <ul class="text-xs text-gray-400 mt-2 space-y-1.5 ml-4">
+                        <li>✅ <strong class="text-white">Painel AUTO Multifuncional:</strong> Nova aba dedicada com 8 módulos de automação independentes, cada um com toggle ON/OFF individual.</li>
+                        <li>✅ <strong class="text-white">Auto-Compra de Estruturas:</strong> Compra automaticamente a estrutura mais cara que o jogador pode pagar em intervalos configuráveis (Lento/Normal/Rápido/Turbo).</li>
+                        <li>✅ <strong class="text-white">Auto-Pesquisa:</strong> Pesquisa upgrades automaticamente assim que energia suficiente for acumulada, priorizando os de menor custo.</li>
+                        <li>✅ <strong class="text-white">Auto-Cápsula:</strong> Abre cápsulas automaticamente com cooldown de 2s para não quebrar a lógica de recompensas.</li>
+                        <li>✅ <strong class="text-white">Auto-Portal:</strong> Gira o Portal Dimensional automaticamente assim que o cooldown de 5 minutos for resetado.</li>
+                        <li>✅ <strong class="text-white">Auto-Boost Máximo:</strong> Detecta quando não há boosts ativos e aplica um boost de emergência automaticamente.</li>
+                        <li>✅ <strong class="text-white">Auto-Missão:</strong> Resgata missões completas automaticamente sem necessidade de interação manual.</li>
+                        <li>✅ <strong class="text-white">Auto-Otimizador:</strong> Analisa o estado do jogo a cada 10s e sugere/aplica a melhor estratégia para maximizar EPS.</li>
+                        <li>✅ <strong class="text-white">Auto-Prestige:</strong> Colapsa o sistema automaticamente quando o ganho de Matéria Escura atingir o threshold configurado (padrão: 10).</li>
                     </ul>
                 </div>
-                <!-- v15.0 -->
-                <div class="border-l-2 border-accent pl-4">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="version-tag">v15.0</span>
-                        <span class="text-xs text-gray-400">08/05/2026</span>
-                    </div>
-                    <h3 class="font-bold text-white mb-1">Expansão Omniversal</h3>
-                    <ul class="text-xs text-gray-400 space-y-1 list-disc list-inside">
-                        <li>Adicionado sistema de <span class="text-purple-400">Matéria Escura</span> e Prestígio.</li>
-                        <li>Implementado <span class="text-pink-400">Cápsulas Cósmicas</span> (Lootboxes).</li>
-                        <li>Novo sistema de <span class="text-yellow-400">Mascotes e Relíquias</span> com órbitas visuais.</li>
-                        <li>Interface reformulada com TailwindCSS e efeitos de vidro.</li>
+                <div>
+                    <p class="text-sm font-bold text-cyan-400 mb-2">📊 PAINEL DE CONTROLE AUTO:</p>
+                    <ul class="text-xs text-gray-400 mt-2 space-y-1.5 ml-4">
+                        <li>✅ <strong class="text-white">Dashboard de Status:</strong> Mostra quantos módulos estão ativos, ações realizadas e próximas ações agendadas.</li>
+                        <li>✅ <strong class="text-white">Velocidades Configuráveis:</strong> Cada módulo tem sua própria velocidade (Lento 5s / Normal 2s / Rápido 1s / Turbo 0.5s).</li>
+                        <li>✅ <strong class="text-white">Sistema de Desbloqueio:</strong> Módulos avançados (Auto-Prestige, Auto-Otimizador) requerem Matéria Escura para serem desbloqueados.</li>
+                        <li>✅ <strong class="text-white">Indicador no Top Bar:</strong> Status do auto-sistema visível na barra de informações superior.</li>
+                        <li>✅ <strong class="text-white">Log de Ações:</strong> Todas as ações automáticas são registradas no Log Cósmico com prefixo [AUTO].</li>
                     </ul>
                 </div>
-                <!-- v10.0 -->
-                <div class="border-l-2 border-blue-500 pl-4">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="version-tag bg-blue-500">v10.0</span>
-                        <span class="text-xs text-gray-400">Janeiro 2026</span>
-                    </div>
-                    <h3 class="font-bold text-white mb-1">A Era Galáctica</h3>
-                    <ul class="text-xs text-gray-400 space-y-1 list-disc list-inside">
-                        <li>Introdução do <span class="text-blue-400">Log Cósmico</span> para eventos em tempo real.</li>
-                        <li>Adicionadas estruturas avançadas: Colisor Cósmico e Micro-Buraco Negro.</li>
-                        <li>Sistema de conquistas básicas implementado.</li>
+                <div>
+                    <p class="text-sm font-bold text-yellow-400 mb-2">⚙️ MELHORIAS TÉCNICAS v17.0:</p>
+                    <ul class="text-xs text-gray-400 mt-2 space-y-1.5 ml-4">
+                        <li>✅ <strong class="text-white">Auto-Loop Separado:</strong> Sistema de automação roda em loop independente (500ms) para não interferir no game loop principal.</li>
+                        <li>✅ <strong class="text-white">Persistência de Estado:</strong> Configurações AUTO salvas no localStorage com o save do jogo.</li>
+                        <li>✅ <strong class="text-white">Proteção contra Spam:</strong> Cooldowns internos por módulo impedem ações em excesso que poderiam causar lag.</li>
+                        <li>✅ <strong class="text-white">Aba Indicadora:</strong> Badge "NEW" na aba AUTO para fácil descoberta pelo jogador.</li>
                     </ul>
                 </div>
-                <!-- v5.0 -->
-                <div class="border-l-2 border-green-500 pl-4">
+
+                <!-- ===================== v16.0 ===================== -->
+                <div class="border-t border-white/10 pt-4">
                     <div class="flex items-center gap-2 mb-2">
-                        <span class="version-tag bg-green-500">v5.0</span>
-                        <span class="text-xs text-gray-400">Outubro 2025</span>
+                        <span class="version-tag">v16.0 - ULTIMATE EDITION</span>
+                        <span class="text-[10px] text-gray-500">12 de Maio, 2026</span>
                     </div>
-                    <h3 class="font-bold text-white mb-1">Sistemas Solares</h3>
-                    <ul class="text-xs text-gray-400 space-y-1 list-disc list-inside">
-                        <li>Primeira versão com salvamento local (localStorage).</li>
-                        <li>Adicionado sistema de multiplicadores de clique.</li>
-                        <li>Balanceamento de EPS (Energia por Segundo).</li>
+                    <p class="text-sm text-gray-300"><strong>🚀 OTIMIZAÇÕES DE PERFORMANCE (ANTI-LAG):</strong></p>
+                    <ul class="text-xs text-gray-400 mt-2 space-y-1 ml-4">
+                        <li>✅ <strong>RequestAnimationFrame:</strong> Loop de renderização sincronizado com a taxa de atualização do monitor.</li>
+                        <li>✅ <strong>DOM Throttling:</strong> Substituído o `innerHTML` massivo por atualizações seletivas.</li>
+                        <li>✅ <strong>Memoização:</strong> Cache para cálculos de EPS, evitando reprocessamento constante.</li>
+                        <li>✅ <strong>Event Optimization:</strong> Cliques usam listeners passivos para maior fluidez.</li>
+                        <li>✅ <strong>Logic Decoupling:</strong> Separação entre lógica do jogo (10hz) e renderização visual (60hz).</li>
                     </ul>
                 </div>
-                <!-- v1.0 -->
-                <div class="border-l-2 border-gray-500 pl-4">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="version-tag bg-gray-500">v1.0</span>
-                        <span class="text-xs text-gray-400">Agosto 2025</span>
-                    </div>
-                    <h3 class="font-bold text-white mb-1">Big Bang</h3>
-                    <ul class="text-xs text-gray-400 space-y-1 list-disc list-inside">
-                        <li>Lançamento inicial: Mecânica básica de clique e compra de estruturas.</li>
-                        <li>Interface simples em HTML/CSS puro.</li>
+                <div>
+                    <p class="text-sm text-gray-300"><strong>🔧 CORREÇÕES TÉCNICAS:</strong></p>
+                    <ul class="text-xs text-gray-400 mt-2 space-y-1 ml-4">
+                        <li>✅ <strong>Aba Sistema:</strong> Reescrita do zero com estatísticas e ferramentas de save.</li>
+                        <li>✅ <strong>Memory Leaks:</strong> Corrigido acúmulo de partículas e notificações no DOM.</li>
+                        <li>✅ <strong>Save Integrity:</strong> Sistema de migração de save para compatibilidade.</li>
                     </ul>
                 </div>
-            </div>
-            <div class="p-4 bg-white/5 text-center">
-                <p class="text-[10px] text-gray-500 italic">Obrigado por jogar Supernova Clicker!</p>
+                <div>
+                    <p class="text-sm text-gray-300"><strong>✨ EXPANSÃO DE CONTEÚDO:</strong></p>
+                    <ul class="text-xs text-gray-400 mt-2 space-y-1 ml-4">
+                        <li>✅ <strong>Novos Pets:</strong> Fada Estelar, Golem Cósmico, Espírito Ancestral e Titã Primordial.</li>
+                        <li>✅ <strong>Novas Relíquias:</strong> Jóia da Imortalidade, Tridente do Oceano, Tocha Eterna e Cristal Dimensional.</li>
+                        <li>✅ <strong>Pesquisa Avançada:</strong> 8 novos upgrades até o endgame.</li>
+                        <li>✅ <strong>Sistema de Conquistas:</strong> 20 conquistas com recompensas.</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- 1. DADOS E CONFIGURAÇÃO ---
-        const CONFIG = { SAVE_KEY: 'supernova_v15_save', TICK_RATE: 100 };
-
-        let state = {
-            energy: 0, totalEnergyLifetime: 0, clicks: 0,
-            stardust: 0, darkMatter: 0,
-            structures: {}, upgrades: [],
-            relics: [], pets: [], activePet: null,
-            achievements: [], missions: [], capsules: 0,
-            boosts: [], lastPortalTime: 0,
-            lastUpdate: Date.now()
+        // ========== CONFIG & DATA ==========
+        const CONFIG = {
+            SAVE_KEY: 'supernova_v17_save',
+            UPDATE_INTERVAL: 100,
+            RENDER_INTERVAL: 33,
+            AUTO_INTERVAL: 500,
         };
 
         const DATA = {
             structures: [
-                { id: 's1', name: 'Dedo de Poeira', cost: 15, eps: 0.2, icon: 'fa-hand-pointer' },
-                { id: 's2', name: 'Coletor Solar', cost: 100, eps: 2, icon: 'fa-solar-panel' },
-                { id: 's3', name: 'Refinaria de Hélio', cost: 1100, eps: 15, icon: 'fa-industry' },
-                { id: 's4', name: 'Estação Dyson', cost: 12000, eps: 95, icon: 'fa-satellite' },
-                { id: 's5', name: 'Colisor Cósmico', cost: 130000, eps: 500, icon: 'fa-ring' },
-                { id: 's6', name: 'Micro-Buraco Negro', cost: 2000000, eps: 3500, icon: 'fa-circle-dot' }
+                { id: 's1', name: 'Coletor Solar', cost: 10, icon: 'fa-sun', desc: 'Gera 1 Energia/s' },
+                { id: 's2', name: 'Reator Estelar', cost: 100, icon: 'fa-fire', desc: 'Gera 5 Energia/s' },
+                { id: 's3', name: 'Núcleo Cósmico', cost: 1000, icon: 'fa-star', desc: 'Gera 25 Energia/s' },
+                { id: 's4', name: 'Buraco Negro', cost: 10000, icon: 'fa-circle', desc: 'Gera 100 Energia/s' },
+                { id: 's5', name: 'Supernova', cost: 100000, icon: 'fa-explosion', desc: 'Gera 500 Energia/s' },
+                { id: 's6', name: 'Galáxia Artificial', cost: 1000000, icon: 'fa-galaxy', desc: 'Gera 2500 Energia/s' },
             ],
             upgrades: [
-                { id: 'u1', name: 'Cliques Fotônicos', cost: 500, desc: 'Cliques x2', type: 'click_mult', val: 2 },
-                { id: 'u2', name: 'Nanobots', cost: 2500, desc: 'EPS x1.5', type: 'eps_mult', val: 1.5 },
-                { id: 'u3', name: 'Crítico Quântico', cost: 10000, desc: '10% de Chance Crítica (x5)', type: 'crit_chance', val: 0.1 }
+                { id: 'u1', name: 'Eficiência Solar', cost: 50, desc: 'Estruturas geram +25% de energia' },
+                { id: 'u2', name: 'Amplificação Cósmica', cost: 500, desc: 'Cliques geram +50% de energia' },
+                { id: 'u3', name: 'Reação em Cadeia', cost: 5000, desc: 'Cada estrutura aumenta produção em +2%' },
+                { id: 'u4', name: 'Singularidade', cost: 50000, desc: 'Multiplicador global x1.5' },
+                { id: 'u5', name: 'Teletransporte Quântico', cost: 500000, desc: 'Cliques geram +100% de energia' },
+                { id: 'u6', name: 'Manipulação Temporal', cost: 5000000, desc: 'Tempo passa 20% mais rápido' },
+                { id: 'u7', name: 'Fusão Estelar', cost: 50000000, desc: 'Estruturas geram +100% de energia' },
+                { id: 'u8', name: 'Omnipotência Cósmica', cost: 500000000, desc: 'Multiplicador global x2' },
             ],
             pets: [
-                { id: 'p1', name: 'Sonda X-1', icon: 'fa-rocket', desc: 'Aumenta EPS base em 10%', type: 'eps_boost', val: 1.1 },
-                { id: 'p2', name: 'Astro-Cão', icon: 'fa-dog', desc: 'Cliques valem mais baseados no EPS', type: 'click_synergy', val: 0.01 },
-                { id: 'p3', name: 'Devorador Estelar', icon: 'fa-dragon', desc: '1% de chance de ganhar Poeira ao clicar', type: 'stardust_chance', val: 0.01 }
+                { id: 'p1', name: 'Fênix', icon: 'fa-feather', desc: 'Gera +10% de Energia' },
+                { id: 'p2', name: 'Dragão Estelar', icon: 'fa-dragon', desc: 'Gera +20% de Energia' },
+                { id: 'p3', name: 'Unicórnio Cósmico', icon: 'fa-horse', desc: 'Gera +15% de Energia' },
+                { id: 'p4', name: 'Leviatã', icon: 'fa-water', desc: 'Gera +25% de Energia' },
+                { id: 'p5', name: 'Fada Estelar', icon: 'fa-wand-magic-sparkles', desc: 'Gera +30% de Energia' },
+                { id: 'p6', name: 'Golem Cósmico', icon: 'fa-cube', desc: 'Estruturas custam -20%' },
+                { id: 'p7', name: 'Espírito Ancestral', icon: 'fa-ghost', desc: 'Gera +40% de Energia' },
+                { id: 'p8', name: 'Titã Primordial', icon: 'fa-mountain', desc: 'Multiplicador x1.5' },
             ],
             relics: [
-                { id: 'r1', name: 'Cálice de Táquions', desc: 'Tempo passa 5% mais rápido (Global EPS x1.05)', val: 1.05 },
-                { id: 'r2', name: 'Prisma de Nêutrons', desc: 'Reduz custo de estruturas em 10%', val: 0.90 }
+                { id: 'r1', name: 'Coroa Eterna', val: 1.2, desc: 'Multiplicador de Energia x1.2' },
+                { id: 'r2', name: 'Anel do Poder', val: 0.8, desc: 'Estruturas custam 20% menos' },
+                { id: 'r3', name: 'Espada Cósmica', val: 1.5, desc: 'Multiplicador de Cliques x1.5' },
+                { id: 'r4', name: 'Escudo Primordial', val: 2, desc: 'Boosts duram 2x mais tempo' },
+                { id: 'r5', name: 'Jóia da Imortalidade', val: 1.3, desc: 'Produção offline x1.3' },
+                { id: 'r6', name: 'Tridente do Oceano', val: 0.9, desc: 'Custo de pesquisa -10%' },
+                { id: 'r7', name: 'Tocha Eterna', val: 1.8, desc: 'Multiplicador de Prestige x1.8' },
+                { id: 'r8', name: 'Cristal Dimensional', val: 2.5, desc: 'Multiplicador global x2.5' },
             ],
             achievements: [
-                { id: 'a1', name: 'Faísca', req: 'energy', val: 1000, desc: 'Acumule 1k de energia.', rewardText: '+50 Poeira', reward: {type: 'stardust', val: 50} },
-                { id: 'a2', name: 'Dedo Cansado', req: 'clicks', val: 1000, desc: 'Clique 1000 vezes.', rewardText: '+1 Cápsula', reward: {type: 'capsule', val: 1} }
-            ]
+                { id: 'a1', name: 'Primeiro Clique', desc: 'Clique 1 vez', req: 'clicks', val: 1, reward: { type: 'stardust', val: 5 } },
+                { id: 'a2', name: 'Clicker Iniciante', desc: 'Clique 100 vezes', req: 'clicks', val: 100, reward: { type: 'stardust', val: 25 } },
+                { id: 'a3', name: 'Clicker Experiente', desc: 'Clique 1000 vezes', req: 'clicks', val: 1000, reward: { type: 'capsule', val: 1 } },
+                { id: 'a4', name: 'Clicker Lendário', desc: 'Clique 10000 vezes', req: 'clicks', val: 10000, reward: { type: 'stardust', val: 100 } },
+                { id: 'a5', name: 'Energia Inicial', desc: 'Gere 100 de Energia', req: 'energy', val: 100, reward: { type: 'stardust', val: 10 } },
+                { id: 'a6', name: 'Produtor', desc: 'Gere 10.000 de Energia', req: 'energy', val: 10000, reward: { type: 'stardust', val: 50 } },
+                { id: 'a7', name: 'Magnata', desc: 'Gere 1.000.000 de Energia', req: 'energy', val: 1000000, reward: { type: 'capsule', val: 2 } },
+                { id: 'a8', name: 'Trilionário', desc: 'Gere 1.000.000.000 de Energia', req: 'energy', val: 1000000000, reward: { type: 'stardust', val: 200 } },
+                { id: 'a9', name: 'Coletor', desc: 'Possua 5 estruturas diferentes', req: 'structures', val: 5, reward: { type: 'stardust', val: 30 } },
+                { id: 'a10', name: 'Construtor', desc: 'Possua 50 estruturas no total', req: 'total_structures', val: 50, reward: { type: 'capsule', val: 1 } },
+                { id: 'a11', name: 'Pesquisador', desc: 'Pesquise 5 upgrades', req: 'upgrades', val: 5, reward: { type: 'stardust', val: 40 } },
+                { id: 'a12', name: 'Cientista Louco', desc: 'Pesquise todos os upgrades', req: 'all_upgrades', val: 8, reward: { type: 'capsule', val: 3 } },
+                { id: 'a13', name: 'Colecionador', desc: 'Possua 5 pets diferentes', req: 'pets', val: 5, reward: { type: 'stardust', val: 50 } },
+                { id: 'a14', name: 'Arqueólogo', desc: 'Possua 5 relíquias', req: 'relics', val: 5, reward: { type: 'capsule', val: 2 } },
+                { id: 'a15', name: 'Primeiro Colapso', desc: 'Realize seu primeiro Prestige', req: 'prestige_count', val: 1, reward: { type: 'stardust', val: 100 } },
+                { id: 'a16', name: 'Ascendido', desc: 'Realize 5 Prestiges', req: 'prestige_count', val: 5, reward: { type: 'capsule', val: 5 } },
+                { id: 'a17', name: 'Deus Cósmico', desc: 'Realize 10 Prestiges', req: 'prestige_count', val: 10, reward: { type: 'stardust', val: 500 } },
+                { id: 'a18', name: 'Giro da Sorte', desc: 'Use o Portal 10 vezes', req: 'portal_spins', val: 10, reward: { type: 'stardust', val: 50 } },
+                { id: 'a19', name: 'Abridores de Cápsulas', desc: 'Abra 50 cápsulas', req: 'capsules_opened', val: 50, reward: { type: 'stardust', val: 75 } },
+                { id: 'a20', name: 'Omniversal Master', desc: 'Desbloqueie todas as conquistas', req: 'all_achievements', val: 20, reward: { type: 'capsule', val: 10 } },
+            ],
+
+            // ========== AUTO MODULES DATA ==========
+            autoModules: [
+                {
+                    id: 'auto_structure',
+                    name: 'Auto-Construtor',
+                    icon: 'fa-hammer',
+                    desc: 'Compra automaticamente a melhor estrutura acessível.',
+                    color: 'indigo',
+                    unlockCost: 0,
+                    unlockDesc: 'Disponível desde o início',
+                    defaultSpeed: 'normal',
+                    speeds: { slow: 5000, normal: 2000, fast: 1000, turbo: 500 },
+                },
+                {
+                    id: 'auto_upgrade',
+                    name: 'Auto-Pesquisa',
+                    icon: 'fa-flask',
+                    desc: 'Pesquisa upgrades automaticamente quando há energia suficiente.',
+                    color: 'pink',
+                    unlockCost: 0,
+                    unlockDesc: 'Disponível desde o início',
+                    defaultSpeed: 'slow',
+                    speeds: { slow: 5000, normal: 3000, fast: 1500, turbo: 800 },
+                },
+                {
+                    id: 'auto_capsule',
+                    name: 'Auto-Cápsula',
+                    icon: 'fa-box-open',
+                    desc: 'Abre cápsulas cósmicas automaticamente.',
+                    color: 'purple',
+                    unlockCost: 0,
+                    unlockDesc: 'Disponível desde o início',
+                    defaultSpeed: 'normal',
+                    speeds: { slow: 5000, normal: 2000, fast: 1000, turbo: 500 },
+                },
+                {
+                    id: 'auto_portal',
+                    name: 'Auto-Portal',
+                    icon: 'fa-dharmachakra',
+                    desc: 'Gira o portal dimensional automaticamente no cooldown.',
+                    color: 'cyan',
+                    unlockCost: 0,
+                    unlockDesc: 'Disponível desde o início',
+                    defaultSpeed: 'slow',
+                    speeds: { slow: 10000, normal: 5000, fast: 2000, turbo: 1000 },
+                },
+                {
+                    id: 'auto_boost',
+                    name: 'Auto-Boost',
+                    icon: 'fa-bolt',
+                    desc: 'Aplica boosts de emergência quando não há nenhum ativo.',
+                    color: 'yellow',
+                    unlockCost: 1,
+                    unlockDesc: 'Requer 1 Matéria Escura',
+                    defaultSpeed: 'normal',
+                    speeds: { slow: 8000, normal: 4000, fast: 2000, turbo: 1000 },
+                },
+                {
+                    id: 'auto_mission',
+                    name: 'Auto-Missão',
+                    icon: 'fa-list-check',
+                    desc: 'Resgata missões completas automaticamente.',
+                    color: 'blue',
+                    unlockCost: 1,
+                    unlockDesc: 'Requer 1 Matéria Escura',
+                    defaultSpeed: 'normal',
+                    speeds: { slow: 5000, normal: 2000, fast: 1000, turbo: 500 },
+                },
+                {
+                    id: 'auto_optimizer',
+                    name: 'Auto-Otimizador',
+                    icon: 'fa-brain',
+                    desc: 'Analisa o estado do jogo e otimiza a estratégia de produção.',
+                    color: 'emerald',
+                    unlockCost: 3,
+                    unlockDesc: 'Requer 3 Matéria Escura',
+                    defaultSpeed: 'slow',
+                    speeds: { slow: 10000, normal: 6000, fast: 3000, turbo: 1500 },
+                },
+                {
+                    id: 'auto_prestige',
+                    name: 'Auto-Prestige',
+                    icon: 'fa-infinity',
+                    desc: 'Colapsa automaticamente quando o ganho superar o threshold.',
+                    color: 'violet',
+                    unlockCost: 5,
+                    unlockDesc: 'Requer 5 Matéria Escura',
+                    defaultSpeed: 'slow',
+                    speeds: { slow: 30000, normal: 15000, fast: 10000, turbo: 5000 },
+                },
+            ],
+        };
+
+        // ========== GAME STATE ==========
+        let state = {
+            energy: 0,
+            clicks: 0,
+            structures: {},
+            upgrades: [],
+            pets: [],
+            relics: [],
+            boosts: [],
+            capsules: 0,
+            stardust: 0,
+            darkMatter: 0,
+            activePet: null,
+            achievements: [],
+            missions: [],
+            totalEnergyLifetime: 0,
+            lastPortalTime: 0,
+            prestigeCount: 0,
+            portalSpins: 0,
+            capsulesOpened: 0,
+            // Auto System State
+            autoModules: {},   // { moduleId: { enabled: bool, speed: string, lastRun: timestamp, actionsCount: int } }
+            autoPrestigeThreshold: 10,
         };
 
         let currentTab = 'structures';
+        let lastUpdateTime = Date.now();
+        let renderScheduled = false;
+        const autoTimers = {};
 
-        // --- 2. INICIALIZAÇÃO ---
-        function init() {
-            createStars();
-            loadGame();
-            generateDailyMissions();
-            renderAll();
-            setInterval(gameLoop, CONFIG.TICK_RATE);
-            document.getElementById('main-click-target').addEventListener('click', handleMainClick);
-            window.addEventListener('beforeunload', saveGame);
-            logEvent("Sistema online. Bem-vindo de volta ao cosmos.");
+        // ========== PERFORMANCE OPTIMIZATION ==========
+        const memoCache = {};
+        function memoize(key, fn) {
+            if (memoCache[key] !== undefined) return memoCache[key];
+            memoCache[key] = fn();
+            return memoCache[key];
+        }
+        function clearMemoCache() {
+            Object.keys(memoCache).forEach(k => delete memoCache[k]);
         }
 
-        function createStars() {
-            const container = document.getElementById('spaceBg');
-            for (let i = 0; i < 150; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.width = star.style.height = (Math.random() * 3) + 'px';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.setProperty('--duration', (Math.random() * 4 + 2) + 's');
-                container.appendChild(star);
-            }
-        }
-
-        // --- 3. CORE LOOP E MATEMÁTICA ---
-        function gameLoop() {
-            const now = Date.now();
-            const delta = (now - state.lastUpdate) / 1000;
-            state.lastUpdate = now;
-
-            updateBoosts(delta);
-            checkAchievements();
-
-            const eps = getEPS();
-            if (eps > 0) addEnergy(eps * delta, false);
-
-            updateRank();
-            renderActiveBoosts();
-            
-            // Random Stardust drop (0.5% chance per second)
-            if(Math.random() < 0.005 * delta) {
-                state.stardust++;
-                logEvent("Partícula estelar coletada! +1 Poeira", "text-cyan-400");
-                updateTopBar();
-            }
-        }
-
-        function handleMainClick(e) {
-            state.clicks++;
-            let amount = getClickValue();
-            
-            // Critical Hit
-            let critChance = hasUpgrade('u3') ? 0.1 : 0;
-            const isCrit = Math.random() < critChance;
-            if (isCrit) amount *= 5;
-
-            // Pet Synergy
-            if (state.activePet === 'p2') amount += getEPS() * DATA.pets.find(p=>p.id==='p2').val;
-            
-            // Pet Stardust Chance
-            if (state.activePet === 'p3' && Math.random() < DATA.pets.find(p=>p.id==='p3').val) {
-                state.stardust++;
-                createParticle(e.clientX + 20, e.clientY - 20, '+1 ✨', '#22d3ee');
-                updateTopBar();
-            }
-
-            addEnergy(amount, true);
-            createParticle(e.clientX, e.clientY, `+${formatNum(amount)}`, isCrit ? '#f472b6' : '#fbbf24');
-        }
-
-        function getClickValue() {
-            let val = 1;
-            if (hasUpgrade('u1')) val *= DATA.upgrades.find(u=>u.id==='u1').val;
-            val *= getBoostMultiplier();
-            val *= (1 + (state.darkMatter * 0.1)); // 10% bonus per Dark Matter
-            return val;
-        }
-
+        // ========== GAME LOGIC ==========
         function getEPS() {
-            let total = 0;
-            DATA.structures.forEach(s => {
-                total += (state.structures[s.id] || 0) * s.eps;
+            return memoize('eps', () => {
+                let eps = 0;
+                DATA.structures.forEach(s => {
+                    const count = state.structures[s.id] || 0;
+                    eps += count * (s.cost / 10);
+                });
+
+                let mult = 1;
+                if (state.upgrades.includes('u1')) mult *= 1.25;
+                if (state.upgrades.includes('u3')) {
+                    const totalStructures = Object.values(state.structures).reduce((a,b)=>a+b,0);
+                    mult *= (1 + totalStructures * 0.02);
+                }
+                if (state.upgrades.includes('u4')) mult *= 1.5;
+                if (state.upgrades.includes('u6')) mult *= 1.2;
+                if (state.upgrades.includes('u7')) mult *= 2;
+                if (state.upgrades.includes('u8')) mult *= 2;
+
+                if (state.activePet) {
+                    const pet = DATA.pets.find(p => p.id === state.activePet);
+                    if (pet.id === 'p1') mult *= 1.1;
+                    if (pet.id === 'p2') mult *= 1.2;
+                    if (pet.id === 'p3') mult *= 1.15;
+                    if (pet.id === 'p4') mult *= 1.25;
+                    if (pet.id === 'p5') mult *= 1.3;
+                    if (pet.id === 'p7') mult *= 1.4;
+                    if (pet.id === 'p8') mult *= 1.5;
+                }
+
+                state.relics.forEach(r => {
+                    if (r === 'r1') mult *= 1.2;
+                    if (r === 'r5') mult *= 1.3;
+                    if (r === 'r8') mult *= 2.5;
+                });
+
+                state.boosts.forEach(b => {
+                    if (b.time > 0) mult *= b.mult;
+                });
+
+                mult *= (1 + (state.darkMatter * 0.1));
+                return Math.floor(eps * mult);
             });
-            
-            if (hasUpgrade('u2')) total *= DATA.upgrades.find(u=>u.id==='u2').val;
-            if (state.activePet === 'p1') total *= DATA.pets.find(p=>p.id==='p1').val;
-            if (state.relics.includes('r1')) total *= DATA.relics.find(r=>r.id==='r1').val;
-            
-            total *= getBoostMultiplier();
-            total *= (1 + (state.darkMatter * 0.1));
-            
-            return total;
         }
 
-        function getBoostMultiplier() {
-            return state.boosts.reduce((acc, b) => acc * b.mult, 1);
-        }
-
-        function addEnergy(amount, isClick) {
+        function addEnergy(amount, fromClick = false) {
             state.energy += amount;
             state.totalEnergyLifetime += amount;
+            clearMemoCache();
+            if (fromClick) state.clicks++;
+        }
+
+        function applyBoost(name, mult, duration) {
+            state.boosts.push({ name, mult, time: duration * 1000, maxTime: duration * 1000 });
+            clearMemoCache();
+        }
+
+        function updateGameLogic() {
+            const now = Date.now();
+            const dt = (now - lastUpdateTime) / 1000;
+            lastUpdateTime = now;
+            addEnergy(getEPS() * dt, false);
+            state.boosts = state.boosts.map(b => ({ ...b, time: Math.max(0, b.time - dt * 1000) })).filter(b => b.time > 0);
+            checkAchievements();
+            generateDailyMissions();
+        }
+
+        // ========== RENDERING ==========
+        function scheduleRender() {
+            if (renderScheduled) return;
+            renderScheduled = true;
+            requestAnimationFrame(() => { renderAll(); renderScheduled = false; });
+        }
+
+        function renderAll() {
             updateTopBar();
+            renderActiveBoosts();
+            renderPets();
+            updateRank();
+            renderContent();
         }
 
-        function updateBoosts(delta) {
-            let changed = false;
-            for (let i = state.boosts.length - 1; i >= 0; i--) {
-                state.boosts[i].time -= delta;
-                if (state.boosts[i].time <= 0) {
-                    logEvent(`Boost esgotado: ${state.boosts[i].name}`);
-                    state.boosts.splice(i, 1);
-                    changed = true;
-                }
+        function updateTopBar() {
+            const eps = getEPS();
+            document.getElementById('energy-display').innerText = formatNum(state.energy);
+            document.getElementById('eps-display').innerText = `EPS: ${formatNum(eps)}`;
+            document.getElementById('stardust-display').innerText = `✨ ${formatNum(state.stardust)}`;
+            document.getElementById('darkmatter-display').innerText = `⚛️ ${formatNum(state.darkMatter)}`;
+
+            // Auto status
+            const activeCount = DATA.autoModules.filter(m => {
+                const ms = state.autoModules[m.id];
+                return ms && ms.enabled;
+            }).length;
+            const autoStatusEl = document.getElementById('auto-status-display');
+            const autoCountEl = document.getElementById('auto-count-display');
+            if (activeCount > 0) {
+                autoStatusEl.innerText = 'ATIVO';
+                autoStatusEl.className = 'text-xs font-black text-emerald-400';
+                autoCountEl.innerText = `${activeCount} módulo${activeCount > 1 ? 's' : ''}`;
+            } else {
+                autoStatusEl.innerText = 'INATIVO';
+                autoStatusEl.className = 'text-xs font-black text-gray-500';
+                autoCountEl.innerText = '0 ativos';
             }
-            if(changed) updateTopBar();
         }
 
-        function applyBoost(name, mult, durationSec) {
-            state.boosts.push({ name, mult, time: durationSec, maxTime: durationSec });
-            logEvent(`Boost ativado: ${name} (x${mult}) por ${durationSec}s!`, "text-green-400");
-        }
-
-        // --- 4. RENDERIZAÇÃO E UI ---
         function switchTab(tab) {
             currentTab = tab;
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`tab-${tab}`).classList.add('active');
-            renderContent();
-        }
-
-        function renderAll() {
-            renderContent();
-            updateTopBar();
-            renderPets();
-        }
-
-        function updateTopBar() {
-            document.getElementById('energy-display').innerText = formatNum(state.energy);
-            document.getElementById('eps-display').innerText = `EPS: ${formatNum(getEPS())}`;
-            document.getElementById('stardust-display').innerHTML = `<i class="fa-solid fa-sparkles text-xs"></i> ${formatNum(state.stardust)}`;
-            document.getElementById('darkmatter-display').innerHTML = `<i class="fa-solid fa-atom text-xs"></i> ${formatNum(state.darkMatter)}`;
-            
-            // Fast visual update for buttons if needed
-            if(currentTab === 'structures') renderContent(); 
+            scheduleRender();
         }
 
         function renderContent() {
             const container = document.getElementById('content-area');
             container.innerHTML = '';
 
-            if (currentTab === 'system') {
-                const totalStructures = Object.values(state.structures).reduce((a, b) => a + b, 0);
-                const clickValue = getClickValue();
-                const eps = getEPS();
-                
-                container.innerHTML = `
-                    <div class="space-y-4">
-                        <div class="glass-panel p-4">
-                            <h3 class="text-sm font-bold text-accent mb-3"><i class="fa-solid fa-chart-simple"></i> STATUS DO EXPLORADOR</h3>
-                            <div class="grid grid-cols-1 gap-2 text-xs">
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-400">Energia Total (Vida Toda)</span>
-                                    <span class="text-yellow-400 font-bold">${formatNum(state.totalEnergyLifetime)}</span>
-                                </div>
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-400">Total de Cliques</span>
-                                    <span class="text-blue-400 font-bold">${state.clicks.toLocaleString()}</span>
-                                </div>
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-400">Valor por Clique</span>
-                                    <span class="text-green-400 font-bold">${formatNum(clickValue)}</span>
-                                </div>
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-400">Energia por Segundo (EPS)</span>
-                                    <span class="text-cyan-400 font-bold">${formatNum(eps)}</span>
-                                </div>
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-400">Estruturas Construídas</span>
-                                    <span class="text-purple-400 font-bold">${totalStructures}</span>
-                                </div>
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-400">Conquistas</span>
-                                    <span class="text-yellow-500 font-bold">${state.achievements.length} / ${DATA.achievements.length}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-400">Matéria Escura Acumulada</span>
-                                    <span class="text-pink-500 font-bold">${state.darkMatter}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="glass-panel p-4">
-                            <h3 class="text-sm font-bold text-blue-400 mb-3"><i class="fa-solid fa-floppy-disk"></i> GERENCIAR DADOS</h3>
-                            <div class="grid grid-cols-1 gap-3">
-                                <button onclick="exportSave()" class="w-full bg-blue-600 hover:bg-blue-500 py-2 rounded text-xs font-bold transition-colors">
-                                    <i class="fa-solid fa-download mr-2"></i> EXPORTAR SAVE (COPIAR)
-                                </button>
-                                <button onclick="importSave()" class="w-full bg-purple-600 hover:bg-purple-500 py-2 rounded text-xs font-bold transition-colors">
-                                    <i class="fa-solid fa-upload mr-2"></i> IMPORTAR SAVE (COLAR)
-                                </button>
-                                <button onclick="hardReset()" class="w-full bg-red-900/50 hover:bg-red-600 py-2 rounded text-xs font-bold text-red-200 transition-all border border-red-500/30">
-                                    <i class="fa-solid fa-trash-can mr-2"></i> RESET TOTAL (CUIDADO)
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
+            if (currentTab === 'auto') {
+                renderAutoPanel(container);
+            } else if (currentTab === 'system') {
+                renderSystemPanel(container);
             } else if (currentTab === 'structures') {
-                const costMult = state.relics.includes('r2') ? DATA.relics.find(r=>r.id==='r2').val : 1;
+                const costMult = state.relics.includes('r2') ? 0.8 : 1;
                 DATA.structures.forEach(s => {
                     const count = state.structures[s.id] || 0;
                     const cost = Math.floor((s.cost * Math.pow(1.15, count)) * costMult);
                     const canAfford = state.energy >= cost;
-
-                    container.innerHTML += `
-                        <div class="glass-panel p-3 flex justify-between items-center ${canAfford?'':'opacity-50'}">
-                            <div class="flex items-center gap-3">
-                                <div class="bg-indigo-900/50 p-2 rounded-lg text-indigo-300 w-10 text-center"><i class="fa-solid ${s.icon}"></i></div>
-                                <div>
-                                    <p class="font-bold text-sm">${s.name} <span class="text-xs text-blue-400">x${count}</span></p>
-                                    <p class="text-xs text-yellow-500">Custo: ${formatNum(cost)}</p>
-                                </div>
+                    const div = document.createElement('div');
+                    div.className = `glass-panel p-3 flex justify-between items-center ${canAfford?'':'opacity-50'}`;
+                    div.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="bg-indigo-900/50 p-2 rounded-lg text-indigo-300 w-10 text-center"><i class="fa-solid ${s.icon}"></i></div>
+                            <div>
+                                <p class="font-bold text-sm">${s.name} <span class="text-xs text-blue-400">x${count}</span></p>
+                                <p class="text-xs text-yellow-500">Custo: ${formatNum(cost)}</p>
                             </div>
-                            <button onclick="buyStructure('${s.id}')" class="bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded text-xs font-bold transition-transform active:scale-95 ${!canAfford?'cursor-not-allowed':''}">COMPRAR</button>
                         </div>
+                        <button onclick="buyStructure('${s.id}')" class="bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded text-xs font-bold transition-transform active:scale-95 ${!canAfford?'cursor-not-allowed':''}">COMPRAR</button>
                     `;
+                    container.appendChild(div);
                 });
-            } 
-            else if (currentTab === 'upgrades') {
+            } else if (currentTab === 'upgrades') {
                 DATA.upgrades.forEach(u => {
                     if (hasUpgrade(u.id)) return;
                     const canAfford = state.energy >= u.cost;
-                    container.innerHTML += `
-                        <div class="glass-panel p-3 border-l-2 border-pink-500 ${canAfford?'':'opacity-50'}">
-                            <div class="flex justify-between items-start mb-1">
-                                <h4 class="font-bold text-sm text-pink-400">${u.name}</h4>
-                                <span class="text-xs text-yellow-400">${formatNum(u.cost)} Energia</span>
-                            </div>
-                            <p class="text-xs text-gray-400 mb-2">${u.desc}</p>
-                            <button onclick="buyUpgrade('${u.id}')" class="w-full bg-pink-600 hover:bg-pink-500 py-1.5 rounded text-xs font-bold">PESQUISAR</button>
+                    const div = document.createElement('div');
+                    div.className = `glass-panel p-3 border-l-2 border-pink-500 ${canAfford?'':'opacity-50'}`;
+                    div.innerHTML = `
+                        <div class="flex justify-between items-start mb-1">
+                            <h4 class="font-bold text-sm text-pink-400">${u.name}</h4>
+                            <span class="text-xs text-yellow-400">${formatNum(u.cost)} Energia</span>
                         </div>
+                        <p class="text-xs text-gray-400 mb-2">${u.desc}</p>
+                        <button onclick="buyUpgrade('${u.id}')" class="w-full bg-pink-600 hover:bg-pink-500 py-1.5 rounded text-xs font-bold">PESQUISAR</button>
                     `;
+                    container.appendChild(div);
                 });
-                if(container.innerHTML === '') container.innerHTML = '<p class="text-center text-gray-500 text-sm mt-10">Tudo pesquisado!</p>';
-            }
-            else if (currentTab === 'lab') {
-                container.innerHTML += `<h3 class="font-bold text-xs text-gray-400 uppercase tracking-widest border-b border-white/10 pb-1 mb-2">Mascotes Espaciais</h3>`;
-                if(state.pets.length === 0) container.innerHTML += `<p class="text-xs text-gray-500 italic mb-4">Encontre pets em cápsulas.</p>`;
-                
+                if (container.children.length === 0) {
+                    container.innerHTML = '<p class="text-center text-gray-500 text-sm mt-10">Tudo pesquisado!</p>';
+                }
+            } else if (currentTab === 'lab') {
+                const h3 = document.createElement('h3');
+                h3.className = 'font-bold text-xs text-gray-400 uppercase tracking-widest border-b border-white/10 pb-1 mb-2';
+                h3.innerHTML = 'Mascotes Espaciais';
+                container.appendChild(h3);
+                if (state.pets.length === 0) {
+                    const p = document.createElement('p');
+                    p.className = 'text-xs text-gray-500 italic mb-4';
+                    p.innerText = 'Encontre pets em cápsulas.';
+                    container.appendChild(p);
+                }
                 DATA.pets.filter(p => state.pets.includes(p.id)).forEach(p => {
                     const isActive = state.activePet === p.id;
-                    container.innerHTML += `
-                        <div class="glass-panel p-3 flex justify-between items-center border ${isActive ? 'border-accent' : 'border-transparent'}">
-                            <div class="flex gap-2 items-center">
-                                <i class="fa-solid ${p.icon} text-lg ${isActive ? 'text-accent' : 'text-gray-400'}"></i>
-                                <div><p class="text-sm font-bold">${p.name}</p><p class="text-[10px] text-gray-400">${p.desc}</p></div>
-                            </div>
-                            <button onclick="togglePet('${p.id}')" class="px-3 py-1 text-xs rounded font-bold ${isActive ? 'bg-red-600 hover:bg-red-500' : 'bg-gray-700 hover:bg-gray-600'}">
-                                ${isActive ? 'GUARDAR' : 'EQUIPAR'}
-                            </button>
+                    const div = document.createElement('div');
+                    div.className = `glass-panel p-3 flex justify-between items-center border ${isActive ? 'border-accent' : 'border-transparent'}`;
+                    div.innerHTML = `
+                        <div class="flex gap-2 items-center">
+                            <i class="fa-solid ${p.icon} text-lg ${isActive ? 'text-accent' : 'text-gray-400'}"></i>
+                            <div><p class="text-sm font-bold">${p.name}</p><p class="text-[10px] text-gray-400">${p.desc}</p></div>
                         </div>
+                        <button onclick="togglePet('${p.id}')" class="px-3 py-1 text-xs rounded font-bold ${isActive ? 'bg-red-600 hover:bg-red-500' : 'bg-gray-700 hover:bg-gray-600'}">
+                            ${isActive ? 'GUARDAR' : 'EQUIPAR'}
+                        </button>
                     `;
+                    container.appendChild(div);
                 });
-
-                container.innerHTML += `<h3 class="font-bold text-xs text-gray-400 uppercase tracking-widest border-b border-white/10 pb-1 mb-2 mt-4">Relíquias</h3>`;
-                if(state.relics.length === 0) container.innerHTML += `<p class="text-xs text-gray-500 italic">Encontre relíquias em cápsulas ou no portal.</p>`;
-                
+                const h3_2 = document.createElement('h3');
+                h3_2.className = 'font-bold text-xs text-gray-400 uppercase tracking-widest border-b border-white/10 pb-1 mb-2 mt-4';
+                h3_2.innerHTML = 'Relíquias';
+                container.appendChild(h3_2);
+                if (state.relics.length === 0) {
+                    const p = document.createElement('p');
+                    p.className = 'text-xs text-gray-500 italic';
+                    p.innerText = 'Encontre relíquias em cápsulas ou no portal.';
+                    container.appendChild(p);
+                }
                 DATA.relics.filter(r => state.relics.includes(r.id)).forEach(r => {
-                    container.innerHTML += `
-                        <div class="glass-panel p-2 flex gap-2 items-center text-yellow-200 bg-yellow-900/20">
-                            <i class="fa-solid fa-trophy text-yellow-500"></i>
-                            <div><p class="text-xs font-bold">${r.name}</p><p class="text-[10px] opacity-70">${r.desc}</p></div>
-                        </div>
-                    `;
+                    const div = document.createElement('div');
+                    div.className = 'glass-panel p-2 flex gap-2 items-center text-yellow-200 bg-yellow-900/20';
+                    div.innerHTML = `<i class="fa-solid fa-trophy text-yellow-500"></i><div><p class="text-xs font-bold">${r.name}</p><p class="text-[10px] opacity-70">${r.desc}</p></div>`;
+                    container.appendChild(div);
                 });
-            }
-            else if (currentTab === 'portal') {
-                // Portal & Lootboxes
-                const portalCD = Math.max(0, (state.lastPortalTime + 300000) - Date.now()); // 5 min CD
+            } else if (currentTab === 'portal') {
+                const portalCD = Math.max(0, (state.lastPortalTime + 300000) - Date.now());
                 const canPortal = portalCD <= 0;
                 const cdText = canPortal ? 'PRONTO!' : `${Math.ceil(portalCD/60000)}m restantes`;
-
-                container.innerHTML = `
-                    <div class="glass-panel p-4 text-center bg-gradient-to-b from-indigo-900/30 to-transparent">
-                        <i class="fa-solid fa-dharmachakra text-4xl text-cyan-400 mb-2 ${canPortal?'animate-spin-slow':''}"></i>
-                        <h3 class="font-bold text-lg text-cyan-300">Giro Dimensional</h3>
-                        <p class="text-xs text-gray-400 mb-3">Sorteie recompensas raras gratuitamente.</p>
-                        <button onclick="spinPortal()" class="w-full py-2 rounded font-bold transition-all ${canPortal ? 'bg-cyan-600 hover:bg-cyan-500' : 'bg-gray-700 opacity-50 cursor-not-allowed'}">
-                            ${canPortal ? 'GIRAR AGORA' : cdText}
-                        </button>
+                const div1 = document.createElement('div');
+                div1.className = 'glass-panel p-4 text-center bg-gradient-to-b from-indigo-900/30 to-transparent';
+                div1.innerHTML = `
+                    <i class="fa-solid fa-dharmachakra text-4xl text-cyan-400 mb-2 ${canPortal?'animate-spin':''}"></i>
+                    <h3 class="font-bold text-lg text-cyan-300">Giro Dimensional</h3>
+                    <p class="text-xs text-gray-400 mb-3">Sorteie recompensas raras gratuitamente.</p>
+                    <button onclick="spinPortal()" class="w-full py-2 rounded font-bold transition-all ${canPortal ? 'bg-cyan-600 hover:bg-cyan-500' : 'bg-gray-700 opacity-50 cursor-not-allowed'}">
+                        ${canPortal ? 'GIRAR AGORA' : cdText}
+                    </button>
+                `;
+                container.appendChild(div1);
+                const div2 = document.createElement('div');
+                div2.className = 'glass-panel p-4 mt-4 border border-purple-500/30';
+                div2.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-bold text-purple-400"><i class="fa-solid fa-box-open"></i> Cápsulas Cósmicas</h3>
+                        <span class="bg-purple-900 text-purple-200 text-xs px-2 py-1 rounded-full">Você tem: ${state.capsules}</span>
                     </div>
-
-                    <div class="glass-panel p-4 mt-4 border border-purple-500/30">
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-bold text-purple-400"><i class="fa-solid fa-box-open"></i> Cápsulas Cósmicas</h3>
-                            <span class="bg-purple-900 text-purple-200 text-xs px-2 py-1 rounded-full">Você tem: ${state.capsules}</span>
-                        </div>
-                        <p class="text-xs text-gray-400 mb-3">Contém quantidades massivas de energia, boosts, pets ou relíquias.</p>
-                        
-                        <div class="flex gap-2">
-                            <button onclick="buyCapsule()" class="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded text-xs font-bold flex flex-col items-center">
-                                <span>COMPRAR</span>
-                                <span class="text-cyan-400 font-normal"><i class="fa-solid fa-sparkles"></i> 100</span>
-                            </button>
-                            <button onclick="openCapsule()" class="flex-1 bg-purple-600 hover:bg-purple-500 py-2 rounded text-xs font-bold ${state.capsules <= 0 ? 'opacity-50 cursor-not-allowed':''}">
-                                ABRIR
-                            </button>
-                        </div>
+                    <p class="text-xs text-gray-400 mb-3">Contém energia, boosts, pets ou relíquias.</p>
+                    <div class="flex gap-2">
+                        <button onclick="buyCapsule()" class="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded text-xs font-bold flex flex-col items-center"><span>COMPRAR</span><span class="text-cyan-400 font-normal"><i class="fa-solid fa-sparkles"></i> 100</span></button>
+                        <button onclick="openCapsule()" class="flex-1 bg-purple-600 hover:bg-purple-500 py-2 rounded text-xs font-bold ${state.capsules <= 0 ? 'opacity-50 cursor-not-allowed':''}">ABRIR</button>
                     </div>
                 `;
-            }
-            else if (currentTab === 'quests') {
-                container.innerHTML += `<h3 class="font-bold text-xs text-gray-400 uppercase mb-2">Conquistas</h3>`;
+                container.appendChild(div2);
+            } else if (currentTab === 'quests') {
+                const h3 = document.createElement('h3');
+                h3.className = 'font-bold text-xs text-gray-400 uppercase mb-2';
+                h3.innerHTML = 'Conquistas';
+                container.appendChild(h3);
                 DATA.achievements.forEach(a => {
                     const done = state.achievements.includes(a.id);
-                    container.innerHTML += `
-                        <div class="glass-panel p-2 flex justify-between items-center mb-2 ${done ? 'border border-green-500/50 bg-green-900/10' : 'opacity-60'}">
-                            <div>
-                                <p class="text-sm font-bold ${done ? 'text-green-400' : 'text-gray-300'}">${a.name}</p>
-                                <p class="text-[10px] text-gray-400">${a.desc}</p>
-                            </div>
-                            ${done ? '<i class="fa-solid fa-check text-green-500"></i>' : `<span class="text-[10px] bg-gray-800 px-1 rounded">${a.rewardText}</span>`}
-                        </div>
+                    const div = document.createElement('div');
+                    div.className = `glass-panel p-2 flex justify-between items-center mb-2 ${done ? 'border border-green-500/50 bg-green-900/10' : 'opacity-60'}`;
+                    div.innerHTML = `
+                        <div><p class="text-sm font-bold ${done ? 'text-green-400' : 'text-gray-300'}">${a.name}</p><p class="text-[10px] text-gray-400">${a.desc}</p></div>
+                        ${done ? '<i class="fa-solid fa-check text-green-500"></i>' : `<span class="text-[10px] bg-gray-800 px-1 rounded">${a.reward.type === 'stardust' ? `+${a.reward.val} ✨` : `+${a.reward.val} 📦`}</span>`}
                     `;
+                    container.appendChild(div);
                 });
-
-                container.innerHTML += `<h3 class="font-bold text-xs text-gray-400 uppercase mt-4 mb-2">Missões (Em progresso)</h3>`;
+                const h3_2 = document.createElement('h3');
+                h3_2.className = 'font-bold text-xs text-gray-400 uppercase mt-4 mb-2';
+                h3_2.innerHTML = 'Missões';
+                container.appendChild(h3_2);
                 state.missions.forEach((m, idx) => {
                     const prog = Math.min(100, (m.progress / m.target) * 100);
-                    container.innerHTML += `
-                        <div class="glass-panel p-3 mb-2">
-                            <div class="flex justify-between text-xs mb-1"><span>${m.desc}</span> <span>${Math.floor(m.progress)}/${m.target}</span></div>
-                            <div class="h-1.5 w-full bg-gray-800 rounded-full"><div class="h-full bg-blue-500 rounded-full" style="width: ${prog}%"></div></div>
-                            ${prog >= 100 ? `<button onclick="claimMission(${idx})" class="mt-2 w-full bg-blue-600 py-1 text-xs font-bold rounded">RESGATAR: ${m.rewardText}</button>` : ''}
-                        </div>
+                    const div = document.createElement('div');
+                    div.className = 'glass-panel p-2 mb-2';
+                    div.innerHTML = `
+                        <p class="text-xs font-bold text-blue-300 mb-1">${m.desc}</p>
+                        <div class="h-1.5 w-full bg-gray-800 rounded-full"><div class="h-full bg-blue-500 rounded-full" style="width: ${prog}%"></div></div>
+                        ${prog >= 100 ? `<button onclick="claimMission(${idx})" class="mt-2 w-full bg-blue-600 py-1 text-xs font-bold rounded">RESGATAR: ${m.rewardText}</button>` : ''}
                     `;
+                    container.appendChild(div);
                 });
-            }
-            else if (currentTab === 'prestige') {
+            } else if (currentTab === 'prestige') {
                 const reward = Math.floor(Math.sqrt(state.totalEnergyLifetime / 500000));
-                container.innerHTML = `
-                    <div class="text-center p-6 bg-gradient-to-b from-purple-900/40 to-transparent rounded-xl border border-purple-500/20">
-                        <i class="fa-solid fa-meteor text-5xl text-purple-500 mb-4 animate-pulse"></i>
-                        <h3 class="text-lg font-bold text-white">Supernova de Matéria Escura</h3>
-                        <p class="text-xs text-gray-400 mt-2">Reinicie sua energia e estruturas. Mantenha Poeira, Cápsulas, Pets, Relíquias e Conquistas.</p>
-                        <p class="text-xs text-gray-400 mt-1">Cada Matéria Escura garante +10% de produção global.</p>
-                        
-                        <div class="mt-4 p-3 bg-black/50 rounded-lg">
-                            <p class="text-[10px] uppercase text-purple-300 tracking-wider">Ganho ao Colapsar</p>
-                            <p class="text-3xl font-black text-white">+${formatNum(reward)} <i class="fa-solid fa-atom text-purple-500 text-xl"></i></p>
-                        </div>
-                        <button onclick="prestige()" class="mt-4 w-full bg-purple-700 hover:bg-purple-600 py-2 rounded font-bold text-sm shadow-[0_0_15px_rgba(168,85,247,0.5)]">
-                            COLAPSAR O SISTEMA
-                        </button>
+                const div1 = document.createElement('div');
+                div1.className = 'text-center p-6 bg-gradient-to-b from-purple-900/40 to-transparent rounded-xl border border-purple-500/20';
+                div1.innerHTML = `
+                    <i class="fa-solid fa-meteor text-5xl text-purple-500 mb-4 animate-pulse"></i>
+                    <h3 class="text-lg font-bold text-white">Supernova de Matéria Escura</h3>
+                    <p class="text-xs text-gray-400 mt-2">Reinicie energia e estruturas. Mantenha Poeira, Cápsulas, Pets, Relíquias e Conquistas.</p>
+                    <p class="text-xs text-gray-400 mt-1">Cada Matéria Escura garante +10% de produção global.</p>
+                    <div class="mt-4 p-3 bg-black/50 rounded-lg">
+                        <p class="text-[10px] uppercase text-purple-300 tracking-wider">Ganho ao Colapsar</p>
+                        <p class="text-3xl font-black text-white">+${formatNum(reward)} <i class="fa-solid fa-atom text-purple-500 text-xl"></i></p>
                     </div>
-
-                    <div class="mt-4 glass-panel p-4">
-                        <h4 class="font-bold text-xs text-gray-400 uppercase border-b border-white/10 pb-1 mb-2">Estatísticas do Jogador</h4>
-                        <div class="grid grid-cols-2 gap-2 text-xs">
-                            <div class="bg-white/5 p-2 rounded">Cliques: <span class="text-white float-right">${state.clicks}</span></div>
-                            <div class="bg-white/5 p-2 rounded">Estruturas: <span class="text-white float-right">${Object.values(state.structures).reduce((a,b)=>a+b,0)}</span></div>
-                            <div class="col-span-2 bg-white/5 p-2 rounded">Energia Gerada: <span class="text-white float-right">${formatNum(state.totalEnergyLifetime)}</span></div>
-                        </div>
+                    <button onclick="prestige()" class="mt-4 w-full bg-purple-700 hover:bg-purple-600 py-2 rounded font-bold text-sm shadow-[0_0_15px_rgba(168,85,247,0.5)]">COLAPSAR O SISTEMA</button>
+                `;
+                container.appendChild(div1);
+                const div2 = document.createElement('div');
+                div2.className = 'mt-4 glass-panel p-4';
+                div2.innerHTML = `
+                    <h4 class="font-bold text-xs text-gray-400 uppercase border-b border-white/10 pb-1 mb-3">Configurações Auto-Prestige</h4>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs text-gray-400">Threshold de Matéria Escura</span>
+                        <input type="number" id="prestige-threshold" value="${state.autoPrestigeThreshold}" min="1" max="999"
+                            class="bg-black/50 border border-purple-500/30 rounded px-2 py-1 text-xs text-white w-20 text-center"
+                            onchange="state.autoPrestigeThreshold = parseInt(this.value) || 10; saveGame();">
+                    </div>
+                    <p class="text-[10px] text-gray-500">O Auto-Prestige colapsará quando o ganho atingir este valor.</p>
+                    <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+                        <div class="bg-white/5 p-2 rounded">Cliques: <span class="text-white float-right">${state.clicks}</span></div>
+                        <div class="bg-white/5 p-2 rounded">Estruturas: <span class="text-white float-right">${Object.values(state.structures).reduce((a,b)=>a+b,0)}</span></div>
+                        <div class="col-span-2 bg-white/5 p-2 rounded">Energia Gerada: <span class="text-white float-right">${formatNum(state.totalEnergyLifetime)}</span></div>
+                        <div class="col-span-2 bg-white/5 p-2 rounded">Prestiges: <span class="text-white float-right">${state.prestigeCount}</span></div>
                     </div>
                 `;
+                container.appendChild(div2);
             }
+        }
+
+        // ========== AUTO PANEL RENDER ==========
+        function renderAutoPanel(container) {
+            // Header dashboard
+            const activeCount = DATA.autoModules.filter(m => {
+                const ms = state.autoModules[m.id];
+                return ms && ms.enabled;
+            }).length;
+
+            const totalActions = DATA.autoModules.reduce((sum, m) => {
+                const ms = state.autoModules[m.id];
+                return sum + (ms ? (ms.actionsCount || 0) : 0);
+            }, 0);
+
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'auto-panel p-4 mb-1';
+            headerDiv.innerHTML = `
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-robot text-emerald-400 text-lg ${activeCount > 0 ? 'gear-spin' : ''}"></i>
+                        <h3 class="font-bold text-sm text-emerald-400">PAINEL DE AUTO-MELHORIAS</h3>
+                    </div>
+                    <span class="text-[10px] bg-emerald-900/50 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">v17.0</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-black/30 rounded-lg p-2">
+                        <p class="text-lg font-black text-emerald-400">${activeCount}</p>
+                        <p class="text-[10px] text-gray-400">Módulos Ativos</p>
+                    </div>
+                    <div class="bg-black/30 rounded-lg p-2">
+                        <p class="text-lg font-black text-white">${DATA.autoModules.length}</p>
+                        <p class="text-[10px] text-gray-400">Total Módulos</p>
+                    </div>
+                    <div class="bg-black/30 rounded-lg p-2">
+                        <p class="text-lg font-black text-yellow-400">${formatNum(totalActions)}</p>
+                        <p class="text-[10px] text-gray-400">Ações Totais</p>
+                    </div>
+                </div>
+                <div class="mt-3 flex gap-2">
+                    <button onclick="enableAllAuto()" class="flex-1 bg-emerald-700 hover:bg-emerald-600 py-1.5 rounded text-xs font-bold transition-colors">
+                        <i class="fa-solid fa-play mr-1"></i> ATIVAR TODOS
+                    </button>
+                    <button onclick="disableAllAuto()" class="flex-1 bg-gray-700 hover:bg-gray-600 py-1.5 rounded text-xs font-bold transition-colors">
+                        <i class="fa-solid fa-stop mr-1"></i> PARAR TODOS
+                    </button>
+                </div>
+            `;
+            container.appendChild(headerDiv);
+
+            // Module cards
+            DATA.autoModules.forEach(mod => {
+                const ms = state.autoModules[mod.id] || { enabled: false, speed: mod.defaultSpeed, actionsCount: 0 };
+                const isUnlocked = state.darkMatter >= mod.unlockCost;
+                const isEnabled = ms.enabled && isUnlocked;
+
+                const colorMap = {
+                    indigo: 'text-indigo-400 border-indigo-500/40 bg-indigo-900/10',
+                    pink: 'text-pink-400 border-pink-500/40 bg-pink-900/10',
+                    purple: 'text-purple-400 border-purple-500/40 bg-purple-900/10',
+                    cyan: 'text-cyan-400 border-cyan-500/40 bg-cyan-900/10',
+                    yellow: 'text-yellow-400 border-yellow-500/40 bg-yellow-900/10',
+                    blue: 'text-blue-400 border-blue-500/40 bg-blue-900/10',
+                    emerald: 'text-emerald-400 border-emerald-500/40 bg-emerald-900/10',
+                    violet: 'text-violet-400 border-violet-500/40 bg-violet-900/10',
+                };
+                const colors = colorMap[mod.color] || colorMap.indigo;
+
+                const card = document.createElement('div');
+                card.className = `auto-card ${isEnabled ? 'active' : ''} ${!isUnlocked ? 'locked' : ''}`;
+
+                const speedLabels = { slow: 'Lento', normal: 'Normal', fast: 'Rápido', turbo: 'Turbo' };
+                const speedColors = { slow: 'bg-blue-900/50 text-blue-300', normal: 'bg-green-900/50 text-green-300', fast: 'bg-yellow-900/50 text-yellow-300', turbo: 'bg-red-900/50 text-red-300' };
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid ${mod.icon} ${colors.split(' ')[0]} ${isEnabled ? 'gear-spin-slow' : ''}"></i>
+                            <span class="text-sm font-bold text-white">${mod.name}</span>
+                            ${isEnabled ? `<span class="speed-badge ${speedColors[ms.speed]}">${speedLabels[ms.speed]}</span>` : ''}
+                        </div>
+                        <div onclick="${isUnlocked ? `toggleAutoModule('${mod.id}')` : ''}"
+                             class="auto-toggle ${isEnabled ? 'on' : ''} ${!isUnlocked ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}">
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-gray-400 mb-2 leading-relaxed">${mod.desc}</p>
+                    ${!isUnlocked ? `
+                        <div class="flex items-center gap-1 text-[10px] text-amber-400">
+                            <i class="fa-solid fa-lock"></i>
+                            <span>${mod.unlockDesc}</span>
+                        </div>
+                    ` : `
+                        <div class="flex items-center justify-between">
+                            <div class="flex gap-1">
+                                ${Object.keys(mod.speeds).map(s => `
+                                    <button onclick="setAutoSpeed('${mod.id}', '${s}')"
+                                        class="text-[10px] px-2 py-0.5 rounded font-bold transition-colors ${ms.speed === s ? speedColors[s] : 'bg-gray-800/80 text-gray-500 hover:text-gray-300'}">
+                                        ${speedLabels[s]}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <span class="text-[10px] text-gray-500">${formatNum(ms.actionsCount || 0)} ações</span>
+                        </div>
+                    `}
+                `;
+                container.appendChild(card);
+            });
+
+            // Tip
+            const tip = document.createElement('div');
+            tip.className = 'text-center py-2';
+            tip.innerHTML = `<p class="text-[10px] text-gray-600">Módulos desbloqueados com Matéria Escura ⚛️</p>`;
+            container.appendChild(tip);
+        }
+
+        function renderSystemPanel(container) {
+            const totalStructures = Object.values(state.structures).reduce((a,b)=>a+b,0);
+            const totalUpgrades = state.upgrades.length;
+            const totalPets = state.pets.length;
+            const totalRelics = state.relics.length;
+            container.innerHTML = `
+                <div class="glass-panel p-4">
+                    <h3 class="text-sm font-bold text-cyan-400 mb-3"><i class="fa-solid fa-chart-line"></i> ESTATÍSTICAS GERAIS</h3>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="stat-row col-span-2"><span class="text-gray-400">Cliques Totais</span><span class="text-blue-400 font-bold">${formatNum(state.clicks)}</span></div>
+                        <div class="stat-row col-span-2"><span class="text-gray-400">EPS (Energia/s)</span><span class="text-green-400 font-bold">${formatNum(getEPS())}</span></div>
+                        <div class="stat-row col-span-2"><span class="text-gray-400">Energia Acumulada</span><span class="text-orange-400 font-bold">${formatNum(state.totalEnergyLifetime)}</span></div>
+                        <div class="stat-row col-span-2"><span class="text-gray-400">Estruturas</span><span class="text-purple-400 font-bold">${totalStructures}</span></div>
+                        <div class="stat-row col-span-2"><span class="text-gray-400">Upgrades</span><span class="text-pink-400 font-bold">${totalUpgrades}/${DATA.upgrades.length}</span></div>
+                        <div class="stat-row col-span-2"><span class="text-gray-400">Pets / Relíquias</span><span class="text-red-400 font-bold">${totalPets} / ${totalRelics}</span></div>
+                    </div>
+                </div>
+                <div class="glass-panel p-4">
+                    <h3 class="text-sm font-bold text-green-400 mb-3"><i class="fa-solid fa-star"></i> BÔNUS ATIVOS</h3>
+                    <div class="space-y-2 text-xs">
+                        <div class="stat-row"><span class="text-gray-400">Mult. Prestige</span><span class="text-green-400 font-bold">x${(1 + state.darkMatter * 0.1).toFixed(2)}</span></div>
+                        <div class="stat-row"><span class="text-gray-400">Pet Ativo</span><span class="text-pink-400 font-bold">${state.activePet ? DATA.pets.find(p => p.id === state.activePet).name : 'Nenhum'}</span></div>
+                        <div class="stat-row"><span class="text-gray-400">Boosts Ativos</span><span class="text-yellow-400 font-bold">${state.boosts.length}</span></div>
+                        <div class="stat-row"><span class="text-gray-400">Cápsulas</span><span class="text-purple-400 font-bold">${state.capsules}</span></div>
+                    </div>
+                </div>
+                <div class="glass-panel p-4">
+                    <h3 class="text-sm font-bold text-blue-400 mb-3"><i class="fa-solid fa-floppy-disk"></i> GERENCIAR DADOS</h3>
+                    <div class="grid grid-cols-1 gap-3">
+                        <button onclick="exportSave()" class="w-full bg-blue-600 hover:bg-blue-500 py-2 rounded text-xs font-bold transition-colors"><i class="fa-solid fa-download mr-2"></i> EXPORTAR SAVE</button>
+                        <button onclick="importSave()" class="w-full bg-purple-600 hover:bg-purple-500 py-2 rounded text-xs font-bold transition-colors"><i class="fa-solid fa-upload mr-2"></i> IMPORTAR SAVE</button>
+                        <button onclick="hardReset()" class="w-full bg-red-900/50 hover:bg-red-600 py-2 rounded text-xs font-bold text-red-200 transition-all border border-red-500/30"><i class="fa-solid fa-trash-can mr-2"></i> RESET TOTAL</button>
+                    </div>
+                </div>
+            `;
         }
 
         function renderActiveBoosts() {
             const cont = document.getElementById('boosts-container');
-            if(state.boosts.length === 0) {
+            if (state.boosts.length === 0) {
                 cont.innerHTML = '<p class="text-xs text-gray-500 italic">Nenhum boost ativo.</p>';
                 return;
             }
@@ -700,7 +1021,7 @@
                     <div class="absolute bottom-0 left-0 h-1 bg-green-500" style="width: ${(b.time/b.maxTime)*100}%"></div>
                     <div class="flex justify-between items-center relative z-10">
                         <span class="text-xs font-bold text-green-400">${b.name} (x${b.mult})</span>
-                        <span class="text-[10px]">${Math.ceil(b.time)}s</span>
+                        <span class="text-[10px]">${Math.ceil(b.time/1000)}s</span>
                     </div>
                 </div>
             `).join('');
@@ -709,13 +1030,9 @@
         function renderPets() {
             const cont = document.getElementById('pet-orbit-container');
             cont.innerHTML = '';
-            if(state.activePet) {
+            if (state.activePet) {
                 const pInfo = DATA.pets.find(p => p.id === state.activePet);
-                cont.innerHTML = `
-                    <div class="orbit" style="animation-duration: 4s;">
-                        <div class="pet"><i class="fa-solid ${pInfo.icon}"></i></div>
-                    </div>
-                `;
+                cont.innerHTML = `<div class="orbit" style="animation-duration: 4s;"><div class="pet"><i class="fa-solid ${pInfo.icon}"></i></div></div>`;
             }
         }
 
@@ -725,7 +1042,6 @@
                 { n: 'Estrela Amarela', r: 50000 }, { n: 'Gigante Azul', r: 1000000 },
                 { n: 'Supergigante', r: 50000000 }, { n: 'Quasar', r: 1000000000 }
             ];
-
             let curr = ranks[0], next = ranks[1];
             for (let i = 0; i < ranks.length; i++) {
                 if (state.totalEnergyLifetime >= ranks[i].r) {
@@ -739,24 +1055,19 @@
             document.getElementById('rank-bar').style.width = Math.min(100, prog) + '%';
         }
 
-        // --- 5. AÇÕES DE JOGABILIDADE ---
+        // ========== GAME ACTIONS ==========
         window.buyStructure = function(id) {
             const s = DATA.structures.find(x => x.id === id);
             const count = state.structures[id] || 0;
-            const costMult = state.relics.includes('r2') ? DATA.relics.find(r=>r.id==='r2').val : 1;
+            const costMult = state.relics.includes('r2') ? 0.8 : 1;
             const cost = Math.floor((s.cost * Math.pow(1.15, count)) * costMult);
-
             if (state.energy >= cost) {
                 state.energy -= cost;
                 state.structures[id] = count + 1;
-                
-                // Atualizar progresso da missão de construir
-                state.missions.forEach(m => { if(m.type === 'build') m.progress++; });
-                
-                renderContent();
-                updateTopBar();
+                state.missions.forEach(m => { if (m.type === 'build') m.progress++; });
+                clearMemoCache(); saveGame(); scheduleRender();
             } else {
-                showNotification(`Energia insuficiente!`, 'error');
+                showNotification('Energia insuficiente!', 'error');
             }
         };
 
@@ -766,150 +1077,361 @@
                 state.energy -= u.cost;
                 state.upgrades.push(id);
                 logEvent(`Pesquisa concluída: ${u.name}`);
-                renderContent();
-                updateTopBar();
+                clearMemoCache(); saveGame(); scheduleRender();
             }
         };
 
         window.togglePet = function(id) {
             if (state.activePet === id) state.activePet = null;
             else state.activePet = id;
-            renderAll();
-            showNotification(state.activePet ? "Mascote equipado!" : "Mascote guardado.", "info");
+            clearMemoCache(); saveGame(); scheduleRender();
+            showNotification(state.activePet ? 'Mascote equipado!' : 'Mascote guardado.', 'info');
         };
 
-        // --- 6. SISTEMAS NOVOS (Lootboxes, Roleta, Missões) ---
         window.spinPortal = function() {
-            if(Date.now() < state.lastPortalTime + 300000) return;
+            if (Date.now() < state.lastPortalTime + 300000) return;
             state.lastPortalTime = Date.now();
-            
+            state.portalSpins++;
             const roll = Math.random();
-            let reward = "";
-            if (roll < 0.4) { state.stardust += 25; reward = "25 Poeira Estelar"; }
-            else if (roll < 0.7) { state.capsules += 1; reward = "1 Cápsula Cósmica"; }
-            else if (roll < 0.9) { applyBoost("Energia Espacial", 3, 60); reward = "Boost x3 por 60s"; }
-            else { state.darkMatter += 1; reward = "1 Matéria Escura"; }
-
-            logEvent(`Portal Girou: Você ganhou ${reward}!`, "text-purple-400");
-            showNotification(reward, "success");
-            renderContent();
-            updateTopBar();
+            let reward = '';
+            if (roll < 0.4) { state.stardust += 25; reward = '25 Poeira Estelar'; }
+            else if (roll < 0.7) { state.capsules += 1; reward = '1 Cápsula Cósmica'; }
+            else if (roll < 0.9) { applyBoost('Energia Espacial', 3, 60); reward = 'Boost x3 por 60s'; }
+            else { state.darkMatter += 1; reward = '1 Matéria Escura'; clearMemoCache(); }
+            logEvent(`Portal Girou: Você ganhou ${reward}!`, 'text-purple-400');
+            showNotification(reward, 'success');
+            clearMemoCache(); saveGame(); scheduleRender();
         };
 
         window.buyCapsule = function() {
             if (state.stardust >= 100) {
-                state.stardust -= 100;
-                state.capsules++;
-                logEvent("Cápsula comprada!");
-                renderContent();
-                updateTopBar();
-            } else {
-                showNotification("Poeira Estelar insuficiente!", "error");
-            }
+                state.stardust -= 100; state.capsules++;
+                logEvent('Cápsula comprada!'); saveGame(); scheduleRender();
+            } else { showNotification('Poeira Estelar insuficiente!', 'error'); }
         };
 
         window.openCapsule = function() {
             if (state.capsules <= 0) return;
-            state.capsules--;
-            
+            state.capsules--; state.capsulesOpened++;
             const roll = Math.random();
-            let rewardTxt = "";
-
+            let rewardTxt = '';
             if (roll < 0.1 && state.pets.length < DATA.pets.length) {
-                // Drop Pet
                 const missing = DATA.pets.filter(p => !state.pets.includes(p.id));
                 const pet = missing[Math.floor(Math.random() * missing.length)];
-                state.pets.push(pet.id);
-                rewardTxt = `Mascote: ${pet.name}!`;
-            } 
-            else if (roll < 0.15 && state.relics.length < DATA.relics.length) {
-                // Drop Relic
+                state.pets.push(pet.id); rewardTxt = `Mascote: ${pet.name}!`;
+            } else if (roll < 0.15 && state.relics.length < DATA.relics.length) {
                 const missing = DATA.relics.filter(r => !state.relics.includes(r.id));
                 const rel = missing[Math.floor(Math.random() * missing.length)];
-                state.relics.push(rel.id);
-                rewardTxt = `Relíquia: ${rel.name}!`;
+                state.relics.push(rel.id); rewardTxt = `Relíquia: ${rel.name}!`;
+            } else if (roll < 0.5) {
+                applyBoost('Fluxo de Cápsula', 5, 30); rewardTxt = 'Boost x5 por 30s!';
+            } else {
+                const gain = Math.max(getEPS() * 600, 1000);
+                addEnergy(gain, false); rewardTxt = `${formatNum(gain)} Energia!`;
             }
-            else if (roll < 0.5) {
-                // Drop Boost
-                applyBoost("Fluxo de Cápsula", 5, 30);
-                rewardTxt = "Boost x5 por 30s!";
-            }
-            else {
-                // Drop Energy based on EPS
-                const gain = getEPS() * 600; // 10 min worth of EPS
-                const actualGain = gain > 1000 ? gain : 1000;
-                addEnergy(actualGain, false);
-                rewardTxt = `${formatNum(actualGain)} Energia!`;
-            }
-
-            logEvent(`Cápsula Aberta: ${rewardTxt}`, "text-pink-400");
-            showNotification(`Cápsula abriu: ${rewardTxt}`, "success");
-            renderContent();
-            updateTopBar();
+            logEvent(`Cápsula Aberta: ${rewardTxt}`, 'text-pink-400');
+            showNotification(`Cápsula: ${rewardTxt}`, 'success');
+            clearMemoCache(); saveGame(); scheduleRender();
         };
 
         function checkAchievements() {
             DATA.achievements.forEach(a => {
-                if(!state.achievements.includes(a.id)) {
+                if (!state.achievements.includes(a.id)) {
                     let passed = false;
-                    if(a.req === 'energy' && state.totalEnergyLifetime >= a.val) passed = true;
-                    if(a.req === 'clicks' && state.clicks >= a.val) passed = true;
-                    
-                    if(passed) {
+                    if (a.req === 'energy' && state.totalEnergyLifetime >= a.val) passed = true;
+                    if (a.req === 'clicks' && state.clicks >= a.val) passed = true;
+                    if (a.req === 'structures' && Object.keys(state.structures).filter(k => state.structures[k] > 0).length >= a.val) passed = true;
+                    if (a.req === 'total_structures' && Object.values(state.structures).reduce((a,b)=>a+b,0) >= a.val) passed = true;
+                    if (a.req === 'upgrades' && state.upgrades.length >= a.val) passed = true;
+                    if (a.req === 'all_upgrades' && state.upgrades.length >= a.val) passed = true;
+                    if (a.req === 'pets' && state.pets.length >= a.val) passed = true;
+                    if (a.req === 'relics' && state.relics.length >= a.val) passed = true;
+                    if (a.req === 'prestige_count' && state.prestigeCount >= a.val) passed = true;
+                    if (a.req === 'portal_spins' && state.portalSpins >= a.val) passed = true;
+                    if (a.req === 'capsules_opened' && state.capsulesOpened >= a.val) passed = true;
+                    if (a.req === 'all_achievements' && state.achievements.length >= a.val) passed = true;
+                    if (passed) {
                         state.achievements.push(a.id);
-                        if(a.reward.type === 'stardust') state.stardust += a.reward.val;
-                        if(a.reward.type === 'capsule') state.capsules += a.reward.val;
-                        
-                        logEvent(`🏆 Conquista Desbloqueada: ${a.name}!`, "text-yellow-400");
-                        showNotification(`Conquista: ${a.name}`, "info");
-                        if(currentTab === 'quests') renderContent();
-                        updateTopBar();
+                        if (a.reward.type === 'stardust') state.stardust += a.reward.val;
+                        if (a.reward.type === 'capsule') state.capsules += a.reward.val;
+                        logEvent(`🏆 Conquista: ${a.name}!`, 'text-yellow-400');
+                        showNotification(`Conquista: ${a.name}`, 'info');
+                        saveGame();
+                        if (currentTab === 'quests') scheduleRender();
                     }
                 }
             });
         }
 
         function generateDailyMissions() {
-            if(state.missions.length < 2) {
+            if (state.missions.length < 2) {
                 state.missions = [
-                    { type: 'click', desc: 'Clique 500 vezes', target: 500, progress: 0, rewardText: '+20 Poeira', reward: {t: 'stardust', v: 20} },
-                    { type: 'build', desc: 'Construa 10 estruturas', target: 10, progress: 0, rewardText: '+1 Cápsula', reward: {t: 'capsule', v: 1} }
+                    { type: 'click', desc: 'Clique 500 vezes', target: 500, progress: 0, rewardText: '+20 Poeira', reward: { t: 'stardust', v: 20 } },
+                    { type: 'build', desc: 'Construa 10 estruturas', target: 10, progress: 0, rewardText: '+1 Cápsula', reward: { t: 'capsule', v: 1 } }
                 ];
             }
         }
 
         window.claimMission = function(index) {
             const m = state.missions[index];
-            if(m.progress >= m.target) {
-                if(m.reward.t === 'stardust') state.stardust += m.reward.v;
-                if(m.reward.t === 'capsule') state.capsules += m.reward.v;
-                
+            if (m.progress >= m.target) {
+                if (m.reward.t === 'stardust') state.stardust += m.reward.v;
+                if (m.reward.t === 'capsule') state.capsules += m.reward.v;
                 logEvent(`Missão Concluída! Ganhou ${m.rewardText}`);
-                state.missions.splice(index, 1); // remove completed
-                renderContent();
-                updateTopBar();
+                state.missions.splice(index, 1);
+                saveGame(); scheduleRender();
             }
         };
 
-        window.prestige = function() {
+        window.prestige = function(silent = false) {
             const reward = Math.floor(Math.sqrt(state.totalEnergyLifetime / 500000));
             if (reward < 1) {
-                showNotification("Energia insuficiente para colapso rentável.", "error");
-                return;
+                if (!silent) showNotification('Energia insuficiente para colapso rentável.', 'error');
+                return false;
             }
-            if (confirm(`Colapsar gerará ${reward} Matéria Escura (multiplicador permanente). Suas estruturas e energia serão resetadas. Confirmar?`)) {
+            const doIt = silent || confirm(`Colapsar gerará ${reward} Matéria Escura. Confirmar?`);
+            if (doIt) {
                 state.darkMatter += reward;
+                state.prestigeCount++;
                 state.energy = 0;
                 state.totalEnergyLifetime = 0;
                 state.structures = {};
                 state.upgrades = [];
-                // Keeps Stardust, Pets, Relics, Capsules, Achievements
+                state.boosts = [];
+                clearMemoCache();
                 saveGame();
-                location.reload();
+                if (!silent) location.reload();
+                return true;
             }
+            return false;
         };
 
-        // --- 7. UTILS & HELPERS ---
+        // ========== AUTO MODULES SYSTEM ==========
+        window.toggleAutoModule = function(id) {
+            if (!state.autoModules[id]) {
+                const mod = DATA.autoModules.find(m => m.id === id);
+                state.autoModules[id] = { enabled: false, speed: mod.defaultSpeed, actionsCount: 0, lastRun: 0 };
+            }
+            state.autoModules[id].enabled = !state.autoModules[id].enabled;
+
+            const mod = DATA.autoModules.find(m => m.id === id);
+            const isNowEnabled = state.autoModules[id].enabled;
+            logEvent(`[AUTO] ${mod.name}: ${isNowEnabled ? '🟢 ATIVADO' : '🔴 DESATIVADO'}`, isNowEnabled ? 'text-emerald-400' : 'text-gray-500');
+            saveGame();
+            scheduleRender();
+        };
+
+        window.setAutoSpeed = function(id, speed) {
+            if (!state.autoModules[id]) {
+                const mod = DATA.autoModules.find(m => m.id === id);
+                state.autoModules[id] = { enabled: false, speed: mod.defaultSpeed, actionsCount: 0, lastRun: 0 };
+            }
+            state.autoModules[id].speed = speed;
+            saveGame();
+            scheduleRender();
+        };
+
+        window.enableAllAuto = function() {
+            DATA.autoModules.forEach(mod => {
+                const isUnlocked = state.darkMatter >= mod.unlockCost;
+                if (isUnlocked) {
+                    if (!state.autoModules[mod.id]) {
+                        state.autoModules[mod.id] = { enabled: false, speed: mod.defaultSpeed, actionsCount: 0, lastRun: 0 };
+                    }
+                    state.autoModules[mod.id].enabled = true;
+                }
+            });
+            logEvent('[AUTO] Todos os módulos desbloqueados foram ativados!', 'text-emerald-400');
+            saveGame(); scheduleRender();
+        };
+
+        window.disableAllAuto = function() {
+            DATA.autoModules.forEach(mod => {
+                if (state.autoModules[mod.id]) state.autoModules[mod.id].enabled = false;
+            });
+            logEvent('[AUTO] Todos os módulos foram desativados.', 'text-gray-500');
+            saveGame(); scheduleRender();
+        };
+
+        function getModuleState(id) {
+            const mod = DATA.autoModules.find(m => m.id === id);
+            if (!state.autoModules[id]) {
+                state.autoModules[id] = { enabled: false, speed: mod.defaultSpeed, actionsCount: 0, lastRun: 0 };
+            }
+            return state.autoModules[id];
+        }
+
+        function recordAutoAction(id) {
+            const ms = getModuleState(id);
+            ms.actionsCount = (ms.actionsCount || 0) + 1;
+            ms.lastRun = Date.now();
+        }
+
+        function shouldRun(id) {
+            const ms = getModuleState(id);
+            const mod = DATA.autoModules.find(m => m.id === id);
+            if (!ms.enabled) return false;
+            if (state.darkMatter < mod.unlockCost) return false;
+            const interval = mod.speeds[ms.speed] || 2000;
+            return (Date.now() - (ms.lastRun || 0)) >= interval;
+        }
+
+        function runAutoLoop() {
+            // 1. Auto-Construtor
+            if (shouldRun('auto_structure')) {
+                const costMult = state.relics.includes('r2') ? 0.8 : 1;
+                let bestStruct = null;
+                let bestCost = 0;
+                DATA.structures.forEach(s => {
+                    const count = state.structures[s.id] || 0;
+                    const cost = Math.floor((s.cost * Math.pow(1.15, count)) * costMult);
+                    if (state.energy >= cost && cost >= bestCost) {
+                        bestStruct = s.id;
+                        bestCost = cost;
+                    }
+                });
+                if (bestStruct) {
+                    const s = DATA.structures.find(x => x.id === bestStruct);
+                    const count = state.structures[bestStruct] || 0;
+                    const cost = Math.floor((s.cost * Math.pow(1.15, count)) * costMult);
+                    state.energy -= cost;
+                    state.structures[bestStruct] = count + 1;
+                    state.missions.forEach(m => { if (m.type === 'build') m.progress++; });
+                    clearMemoCache();
+                    recordAutoAction('auto_structure');
+                    logEvent(`[AUTO] Construiu: ${s.name} (x${state.structures[bestStruct]})`, 'text-indigo-400');
+                    saveGame(); scheduleRender();
+                } else {
+                    getModuleState('auto_structure').lastRun = Date.now();
+                }
+            }
+
+            // 2. Auto-Pesquisa
+            if (shouldRun('auto_upgrade')) {
+                const affordable = DATA.upgrades
+                    .filter(u => !hasUpgrade(u.id) && state.energy >= u.cost)
+                    .sort((a, b) => a.cost - b.cost);
+                if (affordable.length > 0) {
+                    const u = affordable[0];
+                    state.energy -= u.cost;
+                    state.upgrades.push(u.id);
+                    clearMemoCache();
+                    recordAutoAction('auto_upgrade');
+                    logEvent(`[AUTO] Pesquisou: ${u.name}`, 'text-pink-400');
+                    saveGame(); scheduleRender();
+                } else {
+                    getModuleState('auto_upgrade').lastRun = Date.now();
+                }
+            }
+
+            // 3. Auto-Cápsula
+            if (shouldRun('auto_capsule')) {
+                if (state.capsules > 0) {
+                    recordAutoAction('auto_capsule');
+                    getModuleState('auto_capsule').lastRun = Date.now();
+                    window.openCapsule();
+                    logEvent('[AUTO] Abriu uma cápsula cósmica!', 'text-purple-400');
+                } else if (state.stardust >= 100) {
+                    recordAutoAction('auto_capsule');
+                    getModuleState('auto_capsule').lastRun = Date.now();
+                    window.buyCapsule();
+                    logEvent('[AUTO] Comprou e abriu uma cápsula!', 'text-purple-300');
+                } else {
+                    getModuleState('auto_capsule').lastRun = Date.now();
+                }
+            }
+
+            // 4. Auto-Portal
+            if (shouldRun('auto_portal')) {
+                if (Date.now() >= state.lastPortalTime + 300000) {
+                    recordAutoAction('auto_portal');
+                    window.spinPortal();
+                    logEvent('[AUTO] Portal dimensional girado!', 'text-cyan-400');
+                } else {
+                    getModuleState('auto_portal').lastRun = Date.now();
+                }
+            }
+
+            // 5. Auto-Boost
+            if (shouldRun('auto_boost')) {
+                if (state.boosts.length === 0) {
+                    applyBoost('Auto-Impulso', 2, 30);
+                    clearMemoCache();
+                    recordAutoAction('auto_boost');
+                    logEvent('[AUTO] Boost de emergência aplicado! (x2 por 30s)', 'text-yellow-400');
+                    saveGame(); scheduleRender();
+                } else {
+                    getModuleState('auto_boost').lastRun = Date.now();
+                }
+            }
+
+            // 6. Auto-Missão
+            if (shouldRun('auto_mission')) {
+                let claimed = false;
+                state.missions.forEach((m, idx) => {
+                    if (m.progress >= m.target) {
+                        if (m.reward.t === 'stardust') state.stardust += m.reward.v;
+                        if (m.reward.t === 'capsule') state.capsules += m.reward.v;
+                        logEvent(`[AUTO] Missão resgatada: ${m.rewardText}`, 'text-blue-400');
+                        state.missions.splice(idx, 1);
+                        claimed = true;
+                    }
+                });
+                if (claimed) {
+                    recordAutoAction('auto_mission');
+                    saveGame(); scheduleRender();
+                }
+                getModuleState('auto_mission').lastRun = Date.now();
+            }
+
+            // 7. Auto-Otimizador
+            if (shouldRun('auto_optimizer')) {
+                recordAutoAction('auto_optimizer');
+                getModuleState('auto_optimizer').lastRun = Date.now();
+                // Find best pet if none active
+                if (!state.activePet && state.pets.length > 0) {
+                    const petPower = { p8: 8, p7: 7, p5: 5, p4: 4, p2: 2, p3: 3, p1: 1, p6: 6 };
+                    const bestPet = state.pets.slice().sort((a, b) => (petPower[b] || 0) - (petPower[a] || 0))[0];
+                    if (bestPet) {
+                        state.activePet = bestPet;
+                        const pInfo = DATA.pets.find(p => p.id === bestPet);
+                        clearMemoCache();
+                        logEvent(`[AUTO] Otimizador equipou: ${pInfo.name}`, 'text-emerald-400');
+                        saveGame(); scheduleRender();
+                    }
+                } else {
+                    // Suggest: EPS analysis
+                    const eps = getEPS();
+                    logEvent(`[AUTO] Otimizador: EPS atual = ${formatNum(eps)}/s ✓`, 'text-emerald-300');
+                }
+            }
+
+            // 8. Auto-Prestige
+            if (shouldRun('auto_prestige')) {
+                const reward = Math.floor(Math.sqrt(state.totalEnergyLifetime / 500000));
+                if (reward >= (state.autoPrestigeThreshold || 10)) {
+                    recordAutoAction('auto_prestige');
+                    logEvent(`[AUTO] Iniciando Auto-Prestige! Ganho: +${reward} Matéria Escura`, 'text-violet-400');
+                    showNotification(`Auto-Prestige! +${reward} Matéria Escura`, 'info');
+                    setTimeout(() => {
+                        state.darkMatter += reward;
+                        state.prestigeCount++;
+                        state.energy = 0;
+                        state.totalEnergyLifetime = 0;
+                        state.structures = {};
+                        state.upgrades = [];
+                        state.boosts = [];
+                        clearMemoCache();
+                        saveGame();
+                        location.reload();
+                    }, 1500);
+                } else {
+                    getModuleState('auto_prestige').lastRun = Date.now();
+                }
+            }
+        }
+
+        // ========== UTILITIES ==========
         function hasUpgrade(id) { return state.upgrades.includes(id); }
 
         function formatNum(num) {
@@ -928,57 +1450,49 @@
             setTimeout(() => p.remove(), 1000);
         }
 
-        function logEvent(msg, colorClass = "text-gray-400") {
+        function logEvent(msg, colorClass = 'text-gray-400') {
             const cont = document.getElementById('log-container');
-            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             const el = document.createElement('div');
             el.className = `log-entry ${colorClass}`;
             el.innerHTML = `<span class="opacity-50">[${time}]</span> ${msg}`;
             cont.prepend(el);
-            if(cont.children.length > 20) cont.lastChild.remove();
+            if (cont.children.length > 30) cont.lastChild.remove();
         }
 
         function showNotification(msg, type) {
             const n = document.createElement('div');
             const colors = { success: 'bg-green-600', error: 'bg-red-600', info: 'bg-blue-600' };
-            n.className = `${colors[type] || 'bg-gray-700'} text-white px-4 py-2 rounded-lg shadow-xl text-xs font-bold mb-2 animate-[floatUp_0.3s_ease-out]`;
+            n.className = `${colors[type] || 'bg-gray-700'} text-white px-4 py-2 rounded-lg shadow-xl text-xs font-bold mb-2`;
             n.innerText = msg;
-            document.getElementById('notif-container').appendChild(n);
-            setTimeout(() => { n.style.opacity = 0; setTimeout(()=>n.remove(), 300); }, 2500);
+            const cont = document.getElementById('notif-container');
+            cont.appendChild(n);
+            setTimeout(() => { n.style.opacity = '0'; n.style.transition = 'opacity 0.3s'; setTimeout(() => n.remove(), 300); }, 2500);
         }
 
-        // --- 8. SAVE SYSTEM ---
+        // ========== SAVE SYSTEM ==========
         function saveGame() { localStorage.setItem(CONFIG.SAVE_KEY, JSON.stringify(state)); }
 
         window.exportSave = function() {
             const saveStr = btoa(JSON.stringify(state));
             navigator.clipboard.writeText(saveStr).then(() => {
-                showNotification("Save copiado para a área de transferência!", "success");
-            }).catch(err => {
-                alert("Erro ao copiar save: " + saveStr);
-            });
+                showNotification('Save copiado!', 'success');
+            }).catch(() => { alert('Save: ' + saveStr); });
         };
 
         window.importSave = function() {
-            const saveStr = prompt("Cole o código do seu save aqui:");
+            const saveStr = prompt('Cole o código do save:');
             if (!saveStr) return;
             try {
                 const decoded = JSON.parse(atob(saveStr));
-                if (decoded && typeof decoded === 'object') {
-                    state = decoded;
-                    saveGame();
-                    location.reload();
-                }
-            } catch (e) {
-                showNotification("Código de save inválido!", "error");
-            }
+                if (decoded && typeof decoded === 'object') { state = decoded; saveGame(); location.reload(); }
+            } catch (e) { showNotification('Código inválido!', 'error'); }
         };
 
         window.hardReset = function() {
-            if (confirm("VOCÊ TEM CERTEZA? Isso apagará TODO o seu progresso permanentemente, incluindo conquistas e matéria escura!")) {
-                if (confirm("ÚLTIMO AVISO: Não há volta. Confirmar reset total?")) {
-                    localStorage.removeItem(CONFIG.SAVE_KEY);
-                    location.reload();
+            if (confirm('Apagar TODO o progresso permanentemente?')) {
+                if (confirm('ÚLTIMO AVISO: Não há volta.')) {
+                    localStorage.removeItem(CONFIG.SAVE_KEY); location.reload();
                 }
             }
         };
@@ -988,31 +1502,75 @@
             if (saved) {
                 const parsed = JSON.parse(saved);
                 state = { ...state, ...parsed };
-                // Safety checks for new arrays
-                ['upgrades','relics','pets','achievements','missions','boosts'].forEach(arr => {
-                    if(!state[arr]) state[arr] = [];
+                ['upgrades', 'relics', 'pets', 'achievements', 'missions', 'boosts'].forEach(arr => {
+                    if (!state[arr]) state[arr] = [];
                 });
-                if(state.capsules === undefined) state.capsules = 0;
-                if(state.stardust === undefined) state.stardust = 0;
-                
-                // Clear old boosts on load to prevent weird offline bugs
-                state.boosts = []; 
+                if (state.capsules === undefined) state.capsules = 0;
+                if (state.stardust === undefined) state.stardust = 0;
+                if (state.prestigeCount === undefined) state.prestigeCount = 0;
+                if (state.portalSpins === undefined) state.portalSpins = 0;
+                if (state.capsulesOpened === undefined) state.capsulesOpened = 0;
+                if (!state.autoModules) state.autoModules = {};
+                if (state.autoPrestigeThreshold === undefined) state.autoPrestigeThreshold = 10;
+                state.boosts = [];
             }
         }
 
-        // Add to click mission dynamically
-        document.getElementById('main-click-target').addEventListener('click', () => {
-            state.missions.forEach(m => { if(m.type === 'click') m.progress++; });
-            if(currentTab === 'quests') renderContent();
-        });
+        // ========== MAIN LOOP ==========
+        function gameLoop() {
+            updateGameLogic();
+            scheduleRender();
+            setTimeout(gameLoop, CONFIG.UPDATE_INTERVAL);
+        }
 
-        // Dev Log Toggle
+        function autoLoop() {
+            runAutoLoop();
+            setTimeout(autoLoop, CONFIG.AUTO_INTERVAL);
+        }
+
+        // ========== STARS BACKGROUND ==========
+        function initStars() {
+            const bg = document.getElementById('spaceBg');
+            for (let i = 0; i < 80; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                const size = Math.random() * 2 + 1;
+                s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--duration:${2+Math.random()*4}s;`;
+                bg.appendChild(s);
+            }
+        }
+
+        // ========== EVENT LISTENERS ==========
+        document.getElementById('main-click-target').addEventListener('click', function(e) {
+            let clickValue = 1;
+            if (state.upgrades.includes('u2')) clickValue *= 1.5;
+            if (state.upgrades.includes('u5')) clickValue *= 2;
+            let mult = 1;
+            if (state.relics.includes('r3')) mult *= 1.5;
+            state.boosts.forEach(b => { if (b.time > 0) mult *= b.mult; });
+            addEnergy(clickValue * mult, true);
+            createParticle(e.clientX, e.clientY, `+${formatNum(clickValue * mult)}`, '#FFD700');
+            state.missions.forEach(m => { if (m.type === 'click') m.progress++; });
+            clearMemoCache(); saveGame(); scheduleRender();
+        }, { passive: true });
+
         window.toggleDevLog = function(show) {
-            const modal = document.getElementById('dev-log-modal');
-            modal.style.display = show ? 'flex' : 'none';
+            document.getElementById('dev-log-modal').style.display = show ? 'flex' : 'none';
         };
 
-        // Initialize
+        // ========== INIT ==========
+        function init() {
+            initStars();
+            loadGame();
+            generateDailyMissions();
+            renderAll();
+            gameLoop();
+            autoLoop();
+            logEvent('🚀 Supernova Clicker v17.0 iniciado!', 'text-emerald-400');
+            logEvent('🤖 Sistema de Auto-Melhorias disponível na aba AUTO', 'text-emerald-300');
+        }
+
         window.onload = init;
     </script>
 </body>
+</html>
